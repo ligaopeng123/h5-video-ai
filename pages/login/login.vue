@@ -3,7 +3,7 @@
 		<view class="input-group">
 			<view class="input-row border">
 				<text class="title">账号：</text>
-				<m-input class="m-input" type="text" clearable focus v-model="account" placeholder="请输入账号"></m-input>
+				<m-input class="m-input" type="text" clearable focus v-model="username" placeholder="请输入账号"></m-input>
 			</view>
 			<view class="input-row">
 				<text class="title">密码：</text>
@@ -11,7 +11,7 @@
 			</view>
 			<view class="input-row border">
 				<text class="title">服务器地址：</text>
-				<m-input class="m-input" type="text" clearable focus v-model="account" placeholder="请输入账号"></m-input>
+				<m-input class="m-input" type="text" clearable focus v-model="IPAddress" placeholder="请输入服务器地址"></m-input>
 			</view>
 		</view>
 		<view class="btn-row">
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-	import service from '../../service.js';
+	import userApi from './api.js';
 	import {
 		mapState,
 		mapMutations
@@ -45,8 +45,9 @@
 			return {
 				providerList: [],
 				hasProvider: false,
-				account: '',
+				username: '',
 				password: '',
+				IPAddress: '',
 				positionTop: 0,
 				isDevtools: false,
 			}
@@ -88,13 +89,6 @@
 				 * 客户端对账号信息进行一些必要的校验。
 				 * 实际开发中，根据业务需要进行处理，这里仅做示例。
 				 */
-				if (this.account.length < 5) {
-					uni.showToast({
-						icon: 'none',
-						title: '账号最短为 5 个字符'
-					});
-					return;
-				}
 				if (this.password.length < 6) {
 					uni.showToast({
 						icon: 'none',
@@ -108,20 +102,20 @@
 				 * 实际开发中，使用 uni.request 将账号信息发送至服务端，客户端在回调函数中获取结果信息。
 				 */
 				const data = {
-					account: this.account,
+					username: this.username,
 					password: this.password
 				};
-				const validUser = service.getUsers().some(function(user) {
-					return data.account === user.account && data.password === user.password;
+				userApi.checkUser(data, (res)=> {
+					console.log(res.access_token)
 				});
-				if (validUser) {
-					this.toMain(this.account);
-				} else {
-					uni.showToast({
-						icon: 'none',
-						title: '用户账号或密码不正确',
-					});
-				}
+				// if (validUser) {
+				// 	this.toMain(this.username);
+				// } else {
+				// 	uni.showToast({
+				// 		icon: 'none',
+				// 		title: '用户账号或密码不正确',
+				// 	});
+				// }
 			},
 			oauth(value) {
 				uni.login({
@@ -161,8 +155,8 @@
 					});
 				}
 			},
-			toMain(userName) {
-				this.login(userName);
+			toMain(username) {
+				this.login(username);
 				/**
 				 * 强制登录时使用reLaunch方式跳转过来
 				 * 返回首页也使用reLaunch方式

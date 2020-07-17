@@ -45,22 +45,22 @@
 					/**
 					 * 如果需要强制登录，不显示取消按钮
 					 */
-					showCancel: !this.forcedLogin,
+					showCancel: false,// !this.forcedLogin,
 					success: (res) => {
 						if (res.confirm) {
 							/**
 							 * 
 							 * 如果需要强制登录，使用reLaunch方式
 							 */
-							// if (this.forcedLogin) {
-							// 	uni.reLaunch({
-							// 		url: '/pages/login/login'
-							// 	});
-							// } else {
-							// 	uni.navigateTo({
-							// 		url: '/pages/login/login'
-							// 	});
-							// }
+							if (this.forcedLogin) {
+								uni.reLaunch({
+									url: '/pages/login/login'
+								});
+							} else {
+								uni.navigateTo({
+									url: '/pages/login/login'
+								});
+							}
 						}
 					}
 				});

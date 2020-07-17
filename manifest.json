@@ -140,41 +140,41 @@
 		},
 		"async": {
 			"timeout": 20000
-		}
-	},
-	"devServer": {
-		"https": true,
-		"proxy": {
-			"/video": {
-				"target": "http://192.168.1.78:81/video", //需要代理的实际地址
-				"changeOrigin": true, //是否跨域
-				// "ws": true, // 是否webSocket
-				"pathRewrite": {
-					"^/video": ""
-				}
-			},
-			"/admin": {
-				"target": "http://192.168.1.78:81/admin", //需要代理的实际地址
-				"changeOrigin": true, //是否跨域
-				// "ws": true, // 是否webSocket
-				"pathRewrite": {
-					"^/admin": ""
-				}
-			},
-			"/oauth2": {
-				"target": "http://192.168.1.78:81/oauth2", //需要代理的实际地址
-				"changeOrigin": true, //是否跨域
-				// "ws": true, // 是否webSocket
-				"pathRewrite": {
-					"^/oauth2": ""
-				}
-			},
-			"/group1": {
-				"target": "http://192.168.1.78:81/group1", //需要代理的实际地址
-				"changeOrigin": true, //是否跨域
-				// "ws": true, // 是否webSocket
-				"pathRewrite": {
-					"^/group1": ""
+		},
+		"devServer": {
+			"https": true,
+			"proxy": {
+				"/video": {
+					"target": "http://192.168.1.78:81/video", //需要代理的实际地址
+					"changeOrigin": true, //是否跨域
+					// "ws": true, // 是否webSocket
+					"pathRewrite": {
+						"^/video": ""
+					}
+				},
+				"/admin": {
+					"target": "http://192.168.1.78:81/admin", //需要代理的实际地址
+					"changeOrigin": true, //是否跨域
+					// "ws": true, // 是否webSocket
+					"pathRewrite": {
+						"^/admin": ""
+					}
+				},
+				"/oauth2": {
+					"target": "http://192.168.1.78:81/oauth2", //需要代理的实际地址
+					"changeOrigin": true, //是否跨域
+					// "ws": true, // 是否webSocket
+					"pathRewrite": {
+						"^/oauth2": ""
+					}
+				},
+				"/group1": {
+					"target": "http://192.168.1.78:81/group1", //需要代理的实际地址
+					"changeOrigin": true, //是否跨域
+					// "ws": true, // 是否webSocket
+					"pathRewrite": {
+						"^/group1": ""
+					}
 				}
 			}
 		}
