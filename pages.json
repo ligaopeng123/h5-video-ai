@@ -1185,20 +1185,20 @@
 			},
 			{
 				"pagePath": "pages/tabBar/API/API",
-				"iconPath": "static/api.png",
-				"selectedIconPath": "static/apiHL.png",
+				"iconPath": "static/dispose.png",
+				"selectedIconPath": "static/dispose-selected.png",
 				// 接口
 				"text": "处置"
 			}, {
 				"pagePath": "pages/tabBar/extUI/extUI",
-				"iconPath": "static/extui.png",
-				"selectedIconPath": "static/extuiHL.png",
+				"iconPath": "static/statistics.png",
+				"selectedIconPath": "static/statistics-selected.png",
 				// 扩展组件
 				"text": "统计"
 			}, {
 				"pagePath": "pages/tabBar/template/template",
-				"iconPath": "static/template.png",
-				"selectedIconPath": "static/templateHL.png",
+				"iconPath": "static/mine.png",
+				"selectedIconPath": "static/mine-selected.png",
 				// 模版
 				"text": "我的"
 			}
