@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App'
-// 公共组件
+// 公共组件 text
 import pageHead from './components/page-head.vue'
 import pageFoot from './components/page-foot.vue'
 import uLink from '@/components/uLink.vue'
