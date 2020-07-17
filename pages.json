@@ -5,9 +5,16 @@
 			"path": "pages/tabBar/component/component",
 			"style": {
 				"navigationBarTitleText": "预警事件",
+				"navigationBarTitleText": "预警事件",
 				"app-plus": {
 					"bounce": "vertical",
 					"titleNView": {
+						"buttons": [{
+							"text": "\ue534",
+							"fontSrc": "/static/uni.ttf",
+							"fontSize": "22px",
+							"color": "#FFFFFF"
+						}]
 						// "buttons": [{
 						// 	"text": "\ue534",
 						// 	"fontSrc": "/static/uni.ttf",
@@ -21,9 +28,19 @@
 		{
 			"path": "pages/tabBar/API/API",
 			"style": {
+<<<<<<< .mine
+				"navigationBarTitleText": "事件处置",
+=======
 				"navigationBarTitleText": "处置建议",
+>>>>>>> .theirs
 				"app-plus": {
 					"titleNView": {
+						"buttons": [{
+							"text": "\ue534",
+							"fontSrc": "/static/uni.ttf",
+							"fontSize": "22px",
+							"color": "#FFFFFF"
+						}]
 						// "buttons": [{
 						// 	"text": "\ue534",
 						// 	"fontSrc": "/static/uni.ttf",
@@ -37,6 +54,7 @@
 		{
 			"path": "pages/tabBar/template/template",
 			"style": {
+				"navigationBarTitleText": "模版",
 				"navigationBarTitleText": "统计信息",
 				"app-plus": {
 					"titleNView": {
@@ -53,8 +71,7 @@
 		{
 			"path": "pages/tabBar/extUI/extUI",
 			"style": {
-				"navigationBarTitleText": "我的",
-				"app-plus": {
+				"navigationBarTitleText": "扩展组件",				"app-plus": {
 					"titleNView": {
 						// "buttons": [{
 						// 	"text": "\ue534",
