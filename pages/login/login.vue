@@ -43,7 +43,6 @@
 		},
 		data() {
 			return {
-				providerList: [],
 				hasProvider: false,
 				username: '',
 				password: '',
@@ -55,28 +54,6 @@
 		computed: mapState(['forcedLogin']),
 		methods: {
 			...mapMutations(['login']),
-			initProvider() {
-				const filters = ['weixin', 'qq', 'sinaweibo'];
-				uni.getProvider({
-					service: 'oauth',
-					success: (res) => {
-						if (res.provider && res.provider.length) {
-							for (let i = 0; i < res.provider.length; i++) {
-								if (~filters.indexOf(res.provider[i])) {
-									this.providerList.push({
-										value: res.provider[i],
-										image: '../../static/img/' + res.provider[i] + '.png'
-									});
-								}
-							}
-							this.hasProvider = true;
-						}
-					},
-					fail: (err) => {
-						console.error('获取服务供应商失败：' + JSON.stringify(err));
-					}
-				});
-			},
 			initPosition() {
 				/**
 				 * 使用 absolute 定位，并且设置 bottom 值进行定位。软键盘弹出时，底部会因为窗口变化而被顶上来。
@@ -106,74 +83,25 @@
 					password: this.password
 				};
 				userApi.checkUser(data, (res)=> {
-					console.log(res.access_token)
-				});
-				// if (validUser) {
-				// 	this.toMain(this.username);
-				// } else {
-				// 	uni.showToast({
-				// 		icon: 'none',
-				// 		title: '用户账号或密码不正确',
-				// 	});
-				// }
-			},
-			oauth(value) {
-				uni.login({
-					provider: value,
-					success: (res) => {
-						uni.getUserInfo({
-							provider: value,
-							success: (infoRes) => {
-								/**
-								 * 实际开发中，获取用户信息后，需要将信息上报至服务端。
-								 * 服务端可以用 userInfo.openId 作为用户的唯一标识新增或绑定用户信息。
-								 */
-								this.toMain(infoRes.userInfo.nickName);
-							},
-							fail() {
-								uni.showToast({
-									icon: 'none',
-									title: '登陆失败'
-								});
-							}
-						});
-					},
-					fail: (err) => {
-						console.error('授权登录失败：' + JSON.stringify(err));
-					}
-				});
-			},
-			getUserInfo({
-				detail
-			}) {
-				if (detail.userInfo) {
-					this.toMain(detail.userInfo.nickName);
-				} else {
-					uni.showToast({
-						icon: 'none',
-						title: '登陆失败'
+					this.setToken({
+						token: 'Bearer '+ res.access_token, 
+						IPAddress: this.IPAddress
 					});
-				}
+				});
 			},
-			toMain(username) {
-				this.login(username);
+			setToken({token, IPAddress}) {
+				this.login({token, IPAddress});
 				/**
 				 * 强制登录时使用reLaunch方式跳转过来
 				 * 返回首页也使用reLaunch方式
 				 */
-				if (this.forcedLogin) {
-					uni.reLaunch({
-						url: '../main/main',
-					});
-				} else {
-					uni.navigateBack();
-				}
-
-			}
+				uni.reLaunch({
+					url: '/pages/tabBar/component/component',
+				});
+			},
 		},
 		onReady() {
 			this.initPosition();
-			this.initProvider();
 			// #ifdef MP-WEIXIN
 			this.isDevtools = uni.getSystemInfoSync().platform === 'devtools';
 			// #endif

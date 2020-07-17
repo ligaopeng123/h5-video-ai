@@ -5,7 +5,8 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
 	state: {
-		hasLogin: false,
+		token: localStorage.getItem('token'),
+		IPAddress: localStorage.getItem('IPAddress'),
 		loginProvider: "",
 		openid: null,
 		testvuex:false,
@@ -14,12 +15,16 @@ const store = new Vuex.Store({
 	},
 	mutations: {
 		login(state, provider) {
-			state.hasLogin = true;
-			state.loginProvider = provider;
+			state.token = provider.token;
+			state.IPAddress = provider.IPAddress;
+			localStorage.setItem('IPAddress', provider.IPAddress);
+			localStorage.setItem('token', provider.token);
 		},
 		logout(state) {
-			state.hasLogin = false
-			state.openid = null
+			localStorage.setItem('IPAddress', '');
+			localStorage.setItem('token', null);
+			state.token = null;
+			state.IPAddress = '';
 		},
 		setOpenid(state, openid) {
 			state.openid = openid

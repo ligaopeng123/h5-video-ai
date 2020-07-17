@@ -1,9 +1,5 @@
-import {
-	mapState,
-	mapMutations
-} from 'vuex'
 
-
+import store from './store'
 
 /**
  * 获取真实的请求路径
@@ -25,8 +21,7 @@ const getIPAddress = function(url = '') {
 
 
 const getAuthorization = ()=> {
-	// console.log(mapState(['Authorization']).Authorization)
-	return null
+	return store.state.token
 }
 
 
