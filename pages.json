@@ -4,16 +4,16 @@
 		{
 			"path": "pages/tabBar/component/component",
 			"style": {
-				"navigationBarTitleText": "内置组件",
+				"navigationBarTitleText": "预警事件",
 				"app-plus": {
 					"bounce": "vertical",
 					"titleNView": {
-						"buttons": [{
-							"text": "\ue534",
-							"fontSrc": "/static/uni.ttf",
-							"fontSize": "22px",
-							"color": "#FFFFFF"
-						}]
+						// "buttons": [{
+						// 	"text": "\ue534",
+						// 	"fontSrc": "/static/uni.ttf",
+						// 	"fontSize": "22px",
+						// 	"color": "#FFFFFF"
+						// }]
 					}
 				}
 			}
@@ -21,15 +21,15 @@
 		{
 			"path": "pages/tabBar/API/API",
 			"style": {
-				"navigationBarTitleText": "接口",
+				"navigationBarTitleText": "处置建议",
 				"app-plus": {
 					"titleNView": {
-						"buttons": [{
-							"text": "\ue534",
-							"fontSrc": "/static/uni.ttf",
-							"fontSize": "22px",
-							"color": "#FFFFFF"
-						}]
+						// "buttons": [{
+						// 	"text": "\ue534",
+						// 	"fontSrc": "/static/uni.ttf",
+						// 	"fontSize": "22px",
+						// 	"color": "#FFFFFF"
+						// }]
 					}
 				}
 			}
@@ -37,15 +37,15 @@
 		{
 			"path": "pages/tabBar/template/template",
 			"style": {
-				"navigationBarTitleText": "模版",
+				"navigationBarTitleText": "统计信息",
 				"app-plus": {
 					"titleNView": {
-						"buttons": [{
-							"text": "\ue534",
-							"fontSrc": "/static/uni.ttf",
-							"fontSize": "22px",
-							"color": "#FFFFFF"
-						}]
+						// "buttons": [{
+						// 	"text": "\ue534",
+						// 	"fontSrc": "/static/uni.ttf",
+						// 	"fontSize": "22px",
+						// 	"color": "#FFFFFF"
+						// }]
 					}
 				}
 			}
@@ -53,17 +53,23 @@
 		{
 			"path": "pages/tabBar/extUI/extUI",
 			"style": {
-				"navigationBarTitleText": "扩展组件",
+				"navigationBarTitleText": "我的",
 				"app-plus": {
 					"titleNView": {
-						"buttons": [{
-							"text": "\ue534",
-							"fontSrc": "/static/uni.ttf",
-							"fontSize": "22px",
-							"color": "#FFFFFF"
-						}]
+						// "buttons": [{
+						// 	"text": "\ue534",
+						// 	"fontSrc": "/static/uni.ttf",
+						// 	"fontSize": "22px",
+						// 	"color": "#FFFFFF"
+						// }]
 					}
 				}
+			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录"
 			}
 		},
 		{
@@ -1172,8 +1178,8 @@
 		"backgroundColor": "#F8F8F8",
 		"list": [{
 				"pagePath": "pages/tabBar/component/component",
-				"iconPath": "static/component.png",
-				"selectedIconPath": "static/componentHL.png",
+				"iconPath": "static/warning.png",
+				"selectedIconPath": "static/warning-selected.png",
 				// 内置组件
 				"text": "预警"
 			},
@@ -1187,12 +1193,14 @@
 				"pagePath": "pages/tabBar/extUI/extUI",
 				"iconPath": "static/extui.png",
 				"selectedIconPath": "static/extuiHL.png",
+				// 扩展组件
 				"text": "统计"
 			}, {
 				"pagePath": "pages/tabBar/template/template",
 				"iconPath": "static/template.png",
 				"selectedIconPath": "static/templateHL.png",
-				"text": "其他"
+				// 模版
+				"text": "我的"
 			}
 		]
 	}
