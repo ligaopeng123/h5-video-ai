@@ -61,6 +61,7 @@
         justify-content: center;
         align-items: center;
         margin-top: 10rpx;
+		text-align: center;
     }
 
     .uni-header-image {

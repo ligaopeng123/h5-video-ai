@@ -1,11 +1,17 @@
 <template>
-	<view class="content">
+	<view class="content content-background">
+		<view class="uni-header-logo">
+			<image class="uni-header-image" :src="logoImg"></image>
+		</view>
+		<view class="uni-header-logo busines-logo-name">
+			{{businesLogoName}}
+		</view>
 		<view class="input-group">
 			<view class="input-row border">
 				<text class="title">账号：</text>
 				<m-input class="m-input" type="text" clearable focus v-model="username" placeholder="请输入账号"></m-input>
 			</view>
-			<view class="input-row">
+			<view class="input-row border">
 				<text class="title">密码：</text>
 				<m-input type="password" displayable v-model="password" placeholder="请输入密码"></m-input>
 			</view>
@@ -43,12 +49,14 @@
 		},
 		data() {
 			return {
+				businesLogoName: '视觉AI安全预警云平台',
+				logoImg: '/static/logo/Logo_changqing.png',
 				hasProvider: false,
 				username: '',
 				password: '',
 				IPAddress: '',
 				positionTop: 0,
-				isDevtools: false,
+				isDevtools: false
 			}
 		},
 		computed: mapState(['forcedLogin']),
@@ -116,6 +124,15 @@
 			},
 		},
 		onReady() {
+			userApi.getLogo(({data})=> {
+				const OEM = data._value.OEM;
+				this.businesLogoName = OEM.getBusinesLogoName;
+				const logoImg = OEM.getBusinesLoginLogoImgApp;
+				if(logoImg && !logoImg.includes('assets/img')) {
+					this.logoImg = logoImg;
+				}
+			})
+			
 			this.initPosition();
 			// #ifdef MP-WEIXIN
 			this.isDevtools = uni.getSystemInfoSync().platform === 'devtools';
@@ -169,5 +186,53 @@
 		width: 100%;
 		height: 100%;
 		opacity: 0;
+	}
+	.content-background {
+		background: url(@/static/logo/login.png) no-repeat fixed top;
+		height: 100%;
+		top: -45px;
+		width: calc(100% - 20px);
+		height: calc(100% + 25px);
+		position: absolute;
+		z-index: 9999;
+	}
+	/* 重写样式 */
+	.uni-header-image {
+		width: 50%;
+		height: 60px;
+	}
+	.input-group {
+		background-color: rgba(0,0,0,0);
+		color: #e5e5e5;
+	}
+	.uni-input-input {
+	    background: rgba(0,0,0,0);
+	}
+	.uni-input-input:-webkit-autofill {
+	   -webkit-box-shadow: 0 0 0px 1000px rgba(0,0,0,0) inset !important;
+	   -webkit-text-fill-color: #fff !important;
+	}
+	.uni-input-input:focus {
+	  outline:none;
+	  border: 1px solid red;
+	}
+	.busines-logo-name {
+		font-size: 1.5em;
+		color: #277C9C;
+	}
+	
+	.input-row .title {
+	    width: 90px;
+	    padding-left: 12px;
+	    font-size: 14px;
+	}
+	.input-placeholder {
+		font-size: 14px;
+	}
+	.input-group::before {
+	    height: 0px;
+	}
+	.input-group::after {
+	    height: 0px;
 	}
 </style>

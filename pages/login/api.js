@@ -4,6 +4,8 @@ const getUsers = function() {
 	
 }
 
+export const CONFIG_URL = '/admin/config/info';
+
 const checkUser = function(userInfo, success) {
 	HttpClient.post({
 		url: '/oauth2/mobile/token',
@@ -11,6 +13,14 @@ const checkUser = function(userInfo, success) {
 		success
 	})
 }
+
+const getLogo = function(success) {
+	HttpClient.get({
+		url: CONFIG_URL,
+		success
+	})
+}
+
 
 const parsingclass = function(success) {
 	HttpClient.get({
@@ -21,7 +31,8 @@ const parsingclass = function(success) {
 
 export default {
 	checkUser,
-	parsingclass
+	parsingclass,
+	getLogo
 }
 	
 
