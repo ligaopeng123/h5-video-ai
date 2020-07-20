@@ -1,8 +1,5 @@
 <template>
 	<view class="uni-container">
-		<view class="uni-header-logo">
-			<image class="uni-header-image" src="/static/extuiIndex.png"></image>
-		</view>
 		<view class="uni-hello-text">
 			<text class="hello-text">以下是uni-app扩展组件示例，更多组件见插件市场：</text>
 			<u-link class="hello-link" :href="'https://ext.dcloud.net.cn/'" :text="'https://ext.dcloud.net.cn'" :inWhiteList="true"></u-link>
@@ -17,9 +14,17 @@
 </template>
 <script>
 	import uLink from "@/components/uLink.vue"
+	import {
+	    mapState,
+	    mapGetters,
+	    mapMutations
+	} from 'vuex'
 	export default {
 		components: {
 			uLink
+		},
+		computed: {
+		    ...mapGetters(['lable'])
 		},
 		data() {
 			return {
@@ -147,7 +152,9 @@
 				]
 			};
 		},
-		onLoad() {},
+		onLoad() {
+			console.log(this.lable)
+		},
 		onReady() {
 			// #ifdef APP-NVUE
 			uni.preloadPage({

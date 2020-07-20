@@ -5,7 +5,6 @@ const getUsers = function() {
 }
 
 const checkUser = function(userInfo, success) {
-	console.log(666)
 	HttpClient.post({
 		url: '/oauth2/mobile/token',
 		params: userInfo,
@@ -13,8 +12,16 @@ const checkUser = function(userInfo, success) {
 	})
 }
 
+const parsingclass = function(success) {
+	HttpClient.get({
+		url: '/video/parsingclass/listAll',
+		success
+	})
+}
+
 export default {
-	checkUser
+	checkUser,
+	parsingclass
 }
 	
 

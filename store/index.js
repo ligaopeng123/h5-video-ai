@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import VideoRecognitionService from './lable.js'
 
 Vue.use(Vuex)
 
@@ -7,8 +8,9 @@ const store = new Vuex.Store({
 	state: {
 		token: localStorage.getItem('token'),
 		IPAddress: localStorage.getItem('IPAddress'),
-		username: '',
+		username: localStorage.getItem('username'),
 		loginProvider: "",
+		lable: '',
 		openid: null,
 		testvuex:false,
         colorIndex: 0,
@@ -19,7 +21,7 @@ const store = new Vuex.Store({
 			state.token = provider.token;
 			state.username = provider.username;
 			localStorage.setItem('token', provider.token);
-			console.log(provider)
+			localStorage.setItem('username', provider.username);
 		},
 		setIPAddress(state, provider) {
 			state.IPAddress = provider.IPAddress;
@@ -30,6 +32,9 @@ const store = new Vuex.Store({
 			localStorage.setItem('token', null);
 			state.token = null;
 			state.IPAddress = '';
+		},
+		setLable(state, data) {
+			state.lable = new VideoRecognitionService(data);
 		},
 		setOpenid(state, openid) {
 			state.openid = openid
@@ -47,7 +52,10 @@ const store = new Vuex.Store({
     getters:{
         currentColor(state){
             return state.colorList[state.colorIndex]
-        }
+        },
+		lable(state) {
+			return state.lable;
+		}
     },
 	actions: {
 		// lazy loading openid

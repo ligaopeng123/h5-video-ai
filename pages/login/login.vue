@@ -53,7 +53,7 @@
 		},
 		computed: mapState(['forcedLogin']),
 		methods: {
-			...mapMutations(['login', 'setIPAddress']),
+			...mapMutations(['login', 'setIPAddress', 'setLable']),
 			initPosition() {
 				/**
 				 * 使用 absolute 定位，并且设置 bottom 值进行定位。软键盘弹出时，底部会因为窗口变化而被顶上来。
@@ -90,7 +90,6 @@
 							username: this.username
 						});
 					} else {
-						console.log(data)
 						uni.showToast({
 							icon: 'none',
 							mask: true,
@@ -109,6 +108,11 @@
 				uni.reLaunch({
 					url: '/pages/tabBar/event/event',
 				});
+				// TODO 放在默认页面里面处理 每次都需要更新
+				// userApi.parsingclass(({data})=> {
+				// 	const lableData = data.data;
+				// 	this.setLable(lableData);
+				// })
 			},
 		},
 		onReady() {
