@@ -1,39 +1,43 @@
 <template>
-    <view class="uni-container">
-     <uni-list >
-     	<uni-list-item class="home-list-item" style="display: flex;" v-for="(item, index) in list" :key="item.id" :show-arrow="false">
-     		<div class="home-list-item-left">
-     			<img src="../../../static/logo.png" alt="">
-     		</div>
-     		<div class="home-list-item-right">
-     			<p>{{item.name}}</p>
-     			<p>{{item.time}}</p>
-     			<div>
-     				<button size="mini" type="primary">处置</button>
-     				<button size="mini" type="primary">拨号</button>
-     			</div>
-     		</div>
-     	</uni-list-item>
-     </uni-list>
-    </view>
+	<view class="uni-container">
+		<uni-list>
+			<uni-list-item class="home-list-item" style="display: flex;" v-for="(item, index) in list" :key="item.id"
+			 :show-arrow="false">
+				<div class="home-list-item-left">
+					<img src="../../../static/logo.png" alt="">
+				</div>
+				<div class="home-list-item-right">
+					<p>{{item.name}}</p>
+					<p>{{item.time}}</p>
+					<div>
+						<button size="mini" type="primary">处置</button>
+						<button size="mini" type="primary">拨号</button>
+					</div>
+				</div>
+			</uni-list-item>
+		</uni-list>
+	</view>
 </template>
 <script>
-    // TODO 修复Android v3 加载过慢问题
-    // #ifdef APP-PLUS
-    var domModule = weex.requireModule('dom');
-    domModule.addRule('fontFace', {
-        'fontFamily': "uniicons",
-        'src': "url('/static/uni.ttf')"
-    });
-    // #endif
+	// TODO 修复Android v3 加载过慢问题
+	// #ifdef APP-PLUS
+	var domModule = weex.requireModule('dom');
+	domModule.addRule('fontFace', {
+		'fontFamily': "uniicons",
+		'src': "url('/static/uni.ttf')"
+	});
+	// #endif
 
-    import uLink from '@/components/uLink.vue'
-	import {mapState} from 'vuex'
+	import uLink from '@/components/uLink.vue'
+	import userApi from '@/pages/login/api.js';
+	import {
+		mapState
+	} from 'vuex'
 	import homeApi from './home-api.js'
-    export default {
-        components: {
-            uLink
-        },
+	export default {
+		components: {
+			uLink
+		},
 		computed: mapState(['token']),
 		onLoad() {
 			if (!this.token) {
@@ -43,7 +47,7 @@
 					/**
 					 * 如果需要强制登录，不显示取消按钮
 					 */
-					showCancel: false,// !this.forcedLogin,
+					showCancel: false, // !this.forcedLogin,
 					success: (res) => {
 						if (res.confirm) {
 							/**
@@ -58,28 +62,35 @@
 			}
 		},
 		mounted() {
-			this.getData();
+			userApi.parsingclass(({
+				data
+			}) => {
+				const lableData = data.data;
+				this.setLable(lableData);
+				this.getData();
+			})
+
 		},
-        data() {
-            return {
-                list: [],
+		data() {
+			return {
+				list: [],
 				pageSize: 10,
 				pageNumber: 1,
-                navigateFlag: false
-            }
-        },
-        onShareAppMessage() {
-            return {
-                title: '欢迎体验uni-app',
-                path: '/pages/tabBar/component/component'
-            }
-        },
-        onNavigationBarButtonTap(e) {
-            uni.navigateTo({
-                url: '/pages/about/about'
-            });
-        },
-        methods: {
+				navigateFlag: false
+			}
+		},
+		onShareAppMessage() {
+			return {
+				title: '欢迎体验uni-app',
+				path: '/pages/tabBar/component/component'
+			}
+		},
+		onNavigationBarButtonTap(e) {
+			uni.navigateTo({
+				url: '/pages/about/about'
+			});
+		},
+		methods: {
 			getData() {
 				homeApi.getHomeData({
 					pageSize: this.pageSize,
@@ -88,62 +99,63 @@
 					sortName: 'time_norm',
 					fields: '[{f:\'*\',v:\'\'}]',
 					sortOrder: 'desc',
-				},(res) => {
-					console.log(res);	
+				}, (res) => {
+					console.log(res);
 				});
 			},
-            triggerCollapse(e) {
-                if (!this.list[e].pages) {
-                    this.goDetailPage(this.list[e].url);
-                    return;
-                }
-                for (var i = 0; i < this.list.length; ++i) {
-                    if (e === i) {
-                        this.list[i].open = !this.list[e].open;
-                    } else {
-                        this.list[i].open = false;
-                    }
-                }
-            },
-            goDetailPage(e) {
-                if (this.navigateFlag) {
-                    return;
-                }
-                this.navigateFlag = true;
-                if (typeof e === 'string') {
-                    uni.navigateTo({
-                        url: '/pages/component/' + e + '/' + e
-                    })
-                } else {
-                    uni.navigateTo({
-                        url: e.url
-                    })
-                }
-                setTimeout(() => {
-                    this.navigateFlag = false;
-                }, 200)
-            }
-        }
-    }
+			triggerCollapse(e) {
+				if (!this.list[e].pages) {
+					this.goDetailPage(this.list[e].url);
+					return;
+				}
+				for (var i = 0; i < this.list.length; ++i) {
+					if (e === i) {
+						this.list[i].open = !this.list[e].open;
+					} else {
+						this.list[i].open = false;
+					}
+				}
+			},
+			goDetailPage(e) {
+				if (this.navigateFlag) {
+					return;
+				}
+				this.navigateFlag = true;
+				if (typeof e === 'string') {
+					uni.navigateTo({
+						url: '/pages/component/' + e + '/' + e
+					})
+				} else {
+					uni.navigateTo({
+						url: e.url
+					})
+				}
+				setTimeout(() => {
+					this.navigateFlag = false;
+				}, 200)
+			}
+		}
+	}
 </script>
 
 <style>
-    @import '../../../common/uni-nvue.css';
+	@import '../../../common/uni-nvue.css';
+
 	.home-list-item {
 		width: 100%;
 		display: flex;
 	}
-	
-	
-	.home-list-item >>> .uni-list-item__content {
-		flex-direction: row!important;		
+
+
+	.home-list-item>>>.uni-list-item__content {
+		flex-direction: row !important;
 	}
-	
+
 	.home-list-item-left {
 		width: 130px;
 		height: 100px;
 	}
-	
+
 	.home-list-item-right {
 		margin-left: 5px;
 		flex: 1;
@@ -151,8 +163,8 @@
 		justify-content: space-around;
 		flex-direction: column;
 	}
-	
-	.home-list-item-right > div > button{
+
+	.home-list-item-right>div>button {
 		margin: 0 2px 0;
 	}
 </style>
