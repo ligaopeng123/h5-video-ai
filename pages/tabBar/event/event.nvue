@@ -1,0 +1,158 @@
+<template>
+    <view class="uni-container">
+     <uni-list >
+     	<uni-list-item class="home-list-item" style="display: flex;" v-for="(item, index) in list" :key="item.id" :show-arrow="false">
+     		<div class="home-list-item-left">
+     			<img src="../../../static/logo.png" alt="">
+     		</div>
+     		<div class="home-list-item-right">
+     			<p>{{item.name}}</p>
+     			<p>{{item.time}}</p>
+     			<div>
+     				<button size="mini" type="primary">处置</button>
+     				<button size="mini" type="primary">拨号</button>
+     			</div>
+     		</div>
+     	</uni-list-item>
+     </uni-list>
+    </view>
+</template>
+<script>
+    // TODO 修复Android v3 加载过慢问题
+    // #ifdef APP-PLUS
+    var domModule = weex.requireModule('dom');
+    domModule.addRule('fontFace', {
+        'fontFamily': "uniicons",
+        'src': "url('/static/uni.ttf')"
+    });
+    // #endif
+
+    import uLink from '@/components/uLink.vue'
+	import {mapState} from 'vuex'
+	import homeApi from './home-api.js'
+    export default {
+        components: {
+            uLink
+        },
+		computed: mapState(['token']),
+		onLoad() {
+			if (!this.token) {
+				uni.showModal({
+					title: '未登录',
+					content: '您未登录，需要登录后才能继续',
+					/**
+					 * 如果需要强制登录，不显示取消按钮
+					 */
+					showCancel: false,// !this.forcedLogin,
+					success: (res) => {
+						if (res.confirm) {
+							/**
+							 * 如果需要强制登录，使用reLaunch方式
+							 */
+							uni.reLaunch({
+								url: '/pages/login/login'
+							});
+						}
+					}
+				});
+			}
+		},
+		mounted() {
+			this.getData();
+		},
+        data() {
+            return {
+                list: [],
+				pageSize: 10,
+				pageNumber: 1,
+                navigateFlag: false
+            }
+        },
+        onShareAppMessage() {
+            return {
+                title: '欢迎体验uni-app',
+                path: '/pages/tabBar/component/component'
+            }
+        },
+        onNavigationBarButtonTap(e) {
+            uni.navigateTo({
+                url: '/pages/about/about'
+            });
+        },
+        methods: {
+			getData() {
+				homeApi.getHomeData({
+					pageSize: this.pageSize,
+					pageNumber: this.pageNumber,
+					// params: '[{term: \'status = 0\'}, {term: \'time_norm BETWEEN ' + p.startTime + ' and ' + p.endTime + '\'}]',
+					sortName: 'time_norm',
+					fields: '[{f:\'*\',v:\'\'}]',
+					sortOrder: 'desc',
+				},(res) => {
+					console.log(res);	
+				});
+			},
+            triggerCollapse(e) {
+                if (!this.list[e].pages) {
+                    this.goDetailPage(this.list[e].url);
+                    return;
+                }
+                for (var i = 0; i < this.list.length; ++i) {
+                    if (e === i) {
+                        this.list[i].open = !this.list[e].open;
+                    } else {
+                        this.list[i].open = false;
+                    }
+                }
+            },
+            goDetailPage(e) {
+                if (this.navigateFlag) {
+                    return;
+                }
+                this.navigateFlag = true;
+                if (typeof e === 'string') {
+                    uni.navigateTo({
+                        url: '/pages/component/' + e + '/' + e
+                    })
+                } else {
+                    uni.navigateTo({
+                        url: e.url
+                    })
+                }
+                setTimeout(() => {
+                    this.navigateFlag = false;
+                }, 200)
+            }
+        }
+    }
+</script>
+
+<style>
+    @import '../../../common/uni-nvue.css';
+	.home-list-item {
+		width: 100%;
+		display: flex;
+	}
+	
+	
+	.home-list-item >>> .uni-list-item__content {
+		flex-direction: row!important;		
+	}
+	
+	.home-list-item-left {
+		width: 130px;
+		height: 100px;
+	}
+	
+	.home-list-item-right {
+		margin-left: 5px;
+		flex: 1;
+		display: flex;
+		justify-content: space-around;
+		flex-direction: column;
+	}
+	
+	.home-list-item-right > div > button{
+		margin: 0 2px 0;
+	}
+</style>

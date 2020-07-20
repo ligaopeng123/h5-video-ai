@@ -5,22 +5,21 @@
 			"path": "pages/tabBar/event/event",
 			"style": {
 				"navigationBarTitleText": "预警事件",
-				"navigationBarTitleText": "预警事件",
 				"app-plus": {
 					"bounce": "vertical",
 					"titleNView": {
-						
+
 					}
 				}
 			}
 		},
 		{
-			"path": "pages/tabBar/API/API",
+			"path": "pages/tabBar/emergency/emergency",
 			"style": {
 				"navigationBarTitleText": "处置建议",
 				"app-plus": {
 					"titleNView": {
-						
+
 					}
 				}
 			}
@@ -31,7 +30,7 @@
 				"navigationBarTitleText": "统计信息",
 				"app-plus": {
 					"titleNView": {
-						
+
 					}
 				}
 			}
@@ -42,7 +41,7 @@
 				"navigationBarTitleText": "我的",
 				"app-plus": {
 					"titleNView": {
-						
+
 					}
 				}
 			}
