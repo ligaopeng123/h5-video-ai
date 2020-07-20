@@ -6,11 +6,8 @@
 					<button size="mini" type="default" @click="bindLogout">退出登录</button>
 				</template>
 			</uni-list-item>
-			
 		</uni-list>
-	</view>
-	<!-- <view class="uni-container">
-		<view class="uni-panel" v-for="(item, index) in list" :key="item.id">
+		<!-- <view class="uni-panel" v-for="(item, index) in list" :key="item.id">
 			<view class="uni-panel-h" :class="item.open ? 'uni-panel-h-on' : ''" @click="triggerCollapse(index)">
 				<text class="uni-panel-text">{{item.name}}</text>
 				<text class="uni-panel-icon uni-icon" :class="item.open ? 'uni-panel-icon-on' : ''">{{item.pages ? '&#xe581;' : '&#xe470;'}}</text>
@@ -21,8 +18,8 @@
 					<text class="uni-navigate-icon uni-icon">&#xe470;</text>
 				</view>
 			</view>
-		</view>
-	</view> -->
+		</view> -->
+	</view>
 </template>
 <script>
 	import {

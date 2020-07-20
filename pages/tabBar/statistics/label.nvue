@@ -1,172 +1,104 @@
 <template>
 	<view class="uni-container">
-		<view class="uni-hello-text">
-			<text class="hello-text">以下是uni-app扩展组件示例，更多组件见插件市场：</text>
-			<u-link class="hello-link" :href="'https://ext.dcloud.net.cn/'" :text="'https://ext.dcloud.net.cn'" :inWhiteList="true"></u-link>
+		<view class="uni-header-logo">
+			<view>告警事件</view>
+			<view>{{total}}</view>
 		</view>
-		<view class="uni-panel" v-for="item in lists" :key="item.url">
+		<view class="qiun-charts">
+			<!--#ifdef MP-ALIPAY -->
+			<canvas canvas-id="canvasRing" id="canvasRing" class="charts" :width="cWidth*pixelRatio" :height="cHeight*pixelRatio"
+			 :style="{{'width':cWidth+'px','height':cHeight+'px'}}" @touchstart="touchPie($event,'canvasRing')"></canvas>
+			<!--#endif-->
+			<!--#ifndef MP-ALIPAY -->
+			<canvas canvas-id="canvasRing" id="canvasRing" class="charts" @touchstart="touchPie($event,'canvasRing')"></canvas>
+			<!--#endif-->
+		</view>
+		<!-- <view class="uni-panel" v-for="item in lists" :key="item.url">
 			<view class="uni-panel-h" @click="goDetailPage(item.url)">
 				<text class="uni-panel-text">{{item.name}}</text>
 				<text class="uni-panel-icon uni-icon">&#xe470;</text>
 			</view>
-		</view>
+		</view> -->
 	</view>
 </template>
 <script>
 	import uLink from "@/components/uLink.vue"
+	import uCharts from '@/components/u-charts/u-charts.js';
+	import api from './api.js'
+	import Utils from '@/utils/utils.js'
+	let canvasObj = {};
+	var _self;
 	import {
-	    mapState,
-	    mapGetters,
-	    mapMutations
+		mapState,
+		mapGetters,
+		mapMutations
 	} from 'vuex'
 	export default {
 		components: {
 			uLink
 		},
 		computed: {
-		    ...mapGetters(['lable'])
+			...mapGetters(['lable'])
+		},
+		onLoad() {
+			_self = this;
+			//#ifdef MP-ALIPAY
+			uni.getSystemInfo({
+				success: function(res) {
+					if (res.pixelRatio > 1) {
+						//正常这里给2就行，如果pixelRatio=3性能会降低一点
+						//_self.pixelRatio =res.pixelRatio;
+						_self.pixelRatio = 2;
+					}
+				}
+			});
+			//#endif
+			this.cWidth = uni.upx2px(750);
+			this.cHeight = uni.upx2px(500);
+			this.cWidth2 = uni.upx2px(700);
+			this.cHeight2 = uni.upx2px(1100);
+			this.cWidth3 = uni.upx2px(250);
+			this.cHeight3 = uni.upx2px(250);
+			this.arcbarWidth = uni.upx2px(24);
+			this.gaugeWidth = uni.upx2px(30);
+			//this.fillData(Data);
+		},
+		onReady() {
+			this.getChartsData();
 		},
 		data() {
 			return {
-				navigateFlag: false,
-				lists: [{
-						name: "Badge 数字角标",
-						url: "badge"
-					},
-					{
-						name: "Calendar 日历",
-						url: "calendar"
-					},
-					{
-						name: "Card 卡片",
-						url: "card"
-					},
-					{
-						name: "Collapse 折叠面板",
-						url: "collapse"
-					},
-					{
-						name: "Combox 组合框",
-						url: "combox"
-					},
-					{
-						name: "Countdown 倒计时",
-						url: "countdown"
-					},
-					{
-						name: "Drawer 抽屉",
-						url: "drawer"
-					},
-					{
-						name: "Fab 悬浮按钮",
-						url: "fab"
-					},
-					{
-						name: "Fav 收藏按钮",
-						url: "fav"
-					},
-					{
-						name: "GoodsNav 商品导航",
-						url: "goods-nav"
-					},
-					{
-						name: "Grid 宫格",
-						url: "grid"
-					},
-					{
-						name: "Icons 图标",
-						url: "icons"
-					},
-					{
-						name: "IndexedList 索引列表",
-						url: "indexed-list"
-					},
-					{
-						name: "Link 超链接",
-						url: "link"
-					},
-					{
-						name: "List 列表",
-						url: "list"
-					},
-					{
-						name: "LoadMore 加载更多",
-						url: "load-more"
-					},
-					{
-						name: "NavBar 自定义导航栏",
-						url: "nav-bar"
-					},
-					// #ifndef QUICKAPP-WEBVIEW
-					{
-						name: "NoticeBar 通告栏",
-						url: "notice-bar"
-					},
-					// #endif
-					{
-						name: "NumberBox 数字输入框",
-						url: "number-box"
-					},
-					{
-						name: "Pagination 分页器",
-						url: "pagination"
-					},
-					// #ifndef QUICKAPP-WEBVIEW-HUAWEI
-					{
-						name: "PopUp 弹出层",
-						url: "popup"
-					},
-					// #endif
-					{
-						name: "Rate 评分",
-						url: "rate"
-					},
-					{
-						name: "SearchBar 搜索栏",
-						url: "search-bar"
-					},
-					{
-						name: "SegmentedControl 分段器",
-						url: "segmented-control"
-					},
-					{
-						name: "Steps 步骤条",
-						url: "steps"
-					},
-					{
-						name: "SwipeAction 滑动操作",
-						url: "swipe-action"
-					},
-					{
-						name: "SwiperDot 轮播图指示点",
-						url: "swiper-dot"
-					},
-					{
-						name: "Tag 标签",
-						url: "tag"
-					},
-					{
-						name: "Transition 过渡动画",
-						url: "transition"
-					},
-				]
-			};
+				cWidth: '',
+				cHeight: '',
+				cWidth2: '', //横屏图表
+				cHeight2: '', //横屏图表
+				cWidth3: '', //圆弧进度图
+				cHeight3: '', //圆弧进度图
+				arcbarWidth: '', //圆弧进度图，进度条宽度,此设置可使各端宽度一致
+				gaugeWidth: '', //仪表盘宽度,此设置可使各端宽度一致
+				tips: '',
+				pixelRatio: 1,
+				serverData: '',
+				itemCount: 30, //x轴单屏数据密度
+				sliderMax: 50,
+				total: 0
+			}
 		},
-		onLoad() {
-			console.log(this.lable)
-		},
-		onReady() {
-			// #ifdef APP-NVUE
-			uni.preloadPage({
-				url: "/pages/extUI/calendar/calendar",
-				success(){
-					console.log("preloadPage /pages/extUI/calendar/calendar")
-				},
-				fail(){
-				}
-			})
-			// #endif
-		},
+		// onLoad() {
+		// 	console.log(this.lable.lableKeyStr)
+		// },
+		// onReady() {
+		// 	// #ifdef APP-NVUE
+		// 	uni.preloadPage({
+		// 		url: "/pages/extUI/calendar/calendar",
+		// 		success(){
+		// 			console.log("preloadPage /pages/extUI/calendar/calendar")
+		// 		},
+		// 		fail(){
+		// 		}
+		// 	})
+		// 	// #endif
+		// },
 		onShareAppMessage() {
 			return {
 				title: '欢迎体验uni-app',
@@ -179,6 +111,74 @@
 			});
 		},
 		methods: {
+			getChartsData() {
+				api.getTotal((data) => {
+					this.total = data.total || 0;
+				});
+				const {startTime, endTime} = Utils.getTimeStamp(null)
+				api.getCharts({
+					fields: this.lable.lableKeyStr,
+					startTime: startTime,
+					endTime: endTime,
+				}, ({data}) => {
+					const lableData = data.data;
+					const defaultType = this.lable.getValueByLable;
+					const series = [];
+					for(let key in defaultType) {
+						series.push({
+							name: this.lable.labelChange(key),
+							data: lableData[key] || 0
+						});
+					}
+					this.showRing("canvasRing", {
+						series
+					});
+					
+				})
+			},
+			touchPie(e, id) {
+				canvasObj[id].showToolTip(e, {
+					format: function(item) {
+						return item.name + ':' + item.data
+					}
+				});
+			},
+			showRing(canvasId, chartData) {
+				canvasObj[canvasId] = new uCharts({
+					$this: _self,
+					canvasId: canvasId,
+					colors: _self.lable.colors,
+					type: 'rose',
+					fontSize: 11,
+					legend: {
+						show: true,
+						position: 'top',
+						float: 'center',
+						itemGap: 5,
+						padding: 5,
+						lineHeight: 15,
+						margin: 5,
+						borderWidth: 1
+					},
+					background: '#FFFFFF',
+					pixelRatio: _self.pixelRatio,
+					series: chartData.series,
+					animation: true,
+					width: _self.cWidth * _self.pixelRatio,
+					height: _self.cHeight * _self.pixelRatio,
+					dataLabel: true,
+					extra: {
+						rose: {
+							type: 'radius',
+							minRadius: 10,
+							activeOpacity: 0.5,
+							offsetAngle: 0,
+							labelWidth: 15
+						}
+					},
+				});
+
+			},
 			goDetailPage(path) {
 				if (this.navigateFlag) {
 					return;
@@ -197,4 +197,17 @@
 
 <style>
 	@import '../../../common/uni-nvue.css';
+
+	/* 通用样式 */
+	.qiun-charts {
+		width: 750rpx;
+		height: 600rpx;
+		background-color: #FFFFFF;
+	}
+
+	.charts {
+		width: 750rpx;
+		height: 600rpx;
+		background-color: #FFFFFF;
+	}
 </style>

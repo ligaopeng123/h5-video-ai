@@ -31,7 +31,8 @@
 	import uLink from '@/components/uLink.vue'
 	import userApi from '@/pages/login/api.js';
 	import {
-		mapState
+		mapState,
+		mapMutations
 	} from 'vuex'
 	import homeApi from './home-api.js'
 	export default {
@@ -91,6 +92,7 @@
 			});
 		},
 		methods: {
+			...mapMutations(['setLable']),
 			getData() {
 				homeApi.getHomeData({
 					pageSize: this.pageSize,

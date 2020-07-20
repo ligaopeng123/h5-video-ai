@@ -35,8 +35,10 @@ const get = function({
 }) {
 	uni.request({
 		method: 'GET',
+		// dataType: 'json',
 		url: getIPAddress(url),
 		header: {
+			// 'content-type': 'application/json', //自定义请求头信息
 			'Authorization': getAuthorization()
 		},
 		data: params,
@@ -55,10 +57,11 @@ const post = function({
 }) {
 	uni.request({
 		method: 'POST',
+		// dataType: 'json',
 		url: getIPAddress(url),
 		header: {
-			'content-type': 'application/json', //自定义请求头信息
-			// 'Authorization': getAuthorization() //自定义请求头信息
+			// 'content-type': 'application/json', //自定义请求头信息
+			'Authorization': getAuthorization() //自定义请求头信息
 		},
 		data: params,
 		success: (res) => {

@@ -13,13 +13,17 @@
 export default class VideoRecognitionService {
 	constructor(lableData) {
 		const defaultType = {};
+		const colors = [];
 		lableData.forEach((item, index) => {
 			defaultType[item.value] = item.label;
-		})
+			colors.push(item.color)
+		});
+		this.colors = colors;
 		this.defaultType = defaultType;
 		this.lableKey = Object.keys(this.defaultType);
 		this.lableKeyStr = this.lableKey.join(',');
 	}
+	colors;
 	defaultType;
 	/**
 	 * 所有常用参数都引入缓存机制  节省性能
@@ -33,7 +37,7 @@ export default class VideoRecognitionService {
 	 * 移动端不支持values方法 使用缓存处理
 	 * @returns {any}
 	 */
-	valueKey() {
+	get valueKey() {
 		if (this.valueKeyCache) {
 			return this.valueKeyCache;
 		}
@@ -54,7 +58,7 @@ export default class VideoRecognitionService {
 	 * 根据lable获取value的值
 	 * @returns {any}
 	 */
-	getLableByValue() {
+	get getLableByValue() {
 		if (this.defaultTypeHelper) {
 			return this.defaultTypeHelper;
 		} else {
@@ -101,7 +105,7 @@ export default class VideoRecognitionService {
 	 * label12: string; label13: string; label14: string; label15: string;
 	 * label16: string; label17: string}}
 	 */
-	getValueByLable() {
+	get getValueByLable() {
 		return this.defaultType;
 	}
 
@@ -183,7 +187,7 @@ export default class VideoRecognitionService {
 	 * 获取label与文字的label，value键值对
 	 * @returns {any}
 	 */
-	getLabelJson() {
+	get getLabelJson() {
 		if (this.labelJson) {
 			return this.labelJson;
 		} else {
@@ -216,7 +220,7 @@ export default class VideoRecognitionService {
 	 * 获取sumFields的集合
 	 * @returns {any}
 	 */
-	getSumFields() {
+	get getSumFields() {
 		if (this.sumFields) {
 			return this.sumFields;
 		}
