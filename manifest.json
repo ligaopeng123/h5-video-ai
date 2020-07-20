@@ -148,7 +148,7 @@
 			"timeout": 20000
 		},
 		"devServer": {
-			"https": true,
+			"https": false, // nginx未开放得时候 设置为true 会照成 后台响应数据过大时 返回不全问题
 			"proxy": {
 				"/video": {
 					"target": "http://192.168.1.78:81/video", //需要代理的实际地址

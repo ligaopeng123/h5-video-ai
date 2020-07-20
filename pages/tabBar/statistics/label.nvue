@@ -112,19 +112,26 @@
 		},
 		methods: {
 			getChartsData() {
-				api.getTotal((data) => {
+				api.getTotal(({
+					data
+				}) => {
 					this.total = data.total || 0;
 				});
-				const {startTime, endTime} = Utils.getTimeStamp(null)
+				const {
+					startTime,
+					endTime
+				} = Utils.getTimeStamp(null)
 				api.getCharts({
 					fields: this.lable.lableKeyStr,
 					startTime: startTime,
 					endTime: endTime,
-				}, ({data}) => {
+				}, ({
+					data
+				}) => {
 					const lableData = data.data;
 					const defaultType = this.lable.getValueByLable;
 					const series = [];
-					for(let key in defaultType) {
+					for (let key in defaultType) {
 						series.push({
 							name: this.lable.labelChange(key),
 							data: lableData[key] || 0
@@ -133,7 +140,7 @@
 					this.showRing("canvasRing", {
 						series
 					});
-					
+
 				})
 			},
 			touchPie(e, id) {

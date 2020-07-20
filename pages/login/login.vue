@@ -83,7 +83,7 @@
 					password: this.password
 				};
 				this.setIPAddress({IPAddress: this.IPAddress});
-				userApi.checkUser(data, ({statusCode, data, errMsg})=> {
+				userApi.checkUser(data, ({statusCode, data, errMsg, errorMessage})=> {
 					if(statusCode === 200) {
 						this.setToken({
 							token: 'Bearer '+ data.access_token, 
@@ -93,7 +93,7 @@
 						uni.showToast({
 							icon: 'none',
 							mask: true,
-							title: data.errorMessage,
+							title: errorMessage || data.errorMessage,
 							duration: 2000
 						});
 					}
