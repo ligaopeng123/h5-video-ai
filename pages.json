@@ -25,7 +25,7 @@
 			}
 		},
 		{
-			"path": "pages/tabBar/template/template",
+			"path": "pages/tabBar/statistics/label",
 			"style": {
 				"navigationBarTitleText": "统计信息",
 				"app-plus": {
@@ -36,7 +36,7 @@
 			}
 		},
 		{
-			"path": "pages/tabBar/extUI/extUI",
+			"path": "pages/tabBar/logout/logout",
 			"style": {
 				"navigationBarTitleText": "我的",
 				"app-plus": {
@@ -1157,26 +1157,26 @@
 		"borderStyle": "black",
 		"backgroundColor": "#F8F8F8",
 		"list": [{
-				"pagePath": "pages/tabBar/component/component",
+				"pagePath": "pages/tabBar/event/event",
 				"iconPath": "static/warning.png",
 				"selectedIconPath": "static/warning-selected.png",
 				// 内置组件
 				"text": "预警"
 			},
 			{
-				"pagePath": "pages/tabBar/API/API",
+				"pagePath": "pages/tabBar/emergency/emergency",
 				"iconPath": "static/dispose.png",
 				"selectedIconPath": "static/dispose-selected.png",
 				// 接口
 				"text": "处置"
 			}, {
-				"pagePath": "pages/tabBar/extUI/extUI",
+				"pagePath": "pages/tabBar/statistics/label",
 				"iconPath": "static/statistics.png",
 				"selectedIconPath": "static/statistics-selected.png",
 				// 扩展组件
 				"text": "统计"
 			}, {
-				"pagePath": "pages/tabBar/template/template",
+				"pagePath": "pages/tabBar/logout/logout",
 				"iconPath": "static/mine.png",
 				"selectedIconPath": "static/mine-selected.png",
 				// 模版
