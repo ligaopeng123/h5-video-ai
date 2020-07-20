@@ -118,3 +118,30 @@ page {
     font-size: 14px;
     font-weight: normal;
 }
+
+.home-list-item {
+	width: 100%;
+	display: flex;
+}
+
+
+.home-list-item >>> .uni-list-item__content {
+	flex-direction: row!important;		
+}
+
+.home-list-item-left {
+	width: 130px;
+	height: 100px;
+}
+
+.home-list-item-right {
+	margin-left: 5px;
+	flex: 1;
+	display: flex;
+	justify-content: space-around;
+	flex-direction: column;
+}
+
+.home-list-item-right > div > button{
+	margin: 0 2px 0;
+}
