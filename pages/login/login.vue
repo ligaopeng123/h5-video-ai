@@ -107,7 +107,7 @@
 				 * 返回首页也使用reLaunch方式
 				 */
 				uni.reLaunch({
-					url: '/pages/tabBar/component/component',
+					url: '/pages/tabBar/event/event',
 				});
 			},
 		},

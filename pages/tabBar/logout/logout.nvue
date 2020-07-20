@@ -1,16 +1,15 @@
 <template>
-	<view class="uni-container">
-		<view class="uni-header-logo">
-			<image class="uni-header-image" src="/static/user/username.png"></image>
-			<div>{{username}}</div>
-		</view>
-		<view class="uni-hello-text">
-			<button class="button" @click="_logout">退出登录</button> 
-		</view>
-		<view class="uni-hello-text">
-			<text class="hello-text">以下是部分模板示例，更多模板见插件市场：</text>
-			<u-link class="hello-link" href="https://ext.dcloud.net.cn" :text="'https://ext.dcloud.net.cn'" :inWhiteList="true"></u-link>
-		</view>
+	<view class="content">
+		<uni-list>
+			<uni-list-item :title="username" :showArrow="false" thumb="/static/user/username.png">
+				<template v-slot:right="">
+					<button size="mini" type="default" @click="bindLogout">退出登录</button>
+				</template>
+			</uni-list-item>
+			
+		</uni-list>
+	</view>
+	<!-- <view class="uni-container">
 		<view class="uni-panel" v-for="(item, index) in list" :key="item.id">
 			<view class="uni-panel-h" :class="item.open ? 'uni-panel-h-on' : ''" @click="triggerCollapse(index)">
 				<text class="uni-panel-text">{{item.name}}</text>
@@ -23,7 +22,7 @@
 				</view>
 			</view>
 		</view>
-	</view>
+	</view> -->
 </template>
 <script>
 	import {
@@ -31,9 +30,13 @@
 		mapMutations
 	} from 'vuex'
 	import uLink from '@/components/uLink.vue'
+	import uniGrid from "@/components/uni-grid/uni-grid.vue"
+	import uniGridItem from "@/components/uni-grid-item/uni-grid-item.vue"
+	import uniList from "@/components/uni-list/uni-list.vue"
+	import uniListItem from "@/components/uni-list-item/uni-list-item.vue"
 	export default {
 		components: {
-			uLink
+			uLink,uniGrid,uniGridItem,uniList, uniListItem
 		},
 		computed: mapState(['username']),
 		data() {
@@ -152,8 +155,8 @@
 			/**
 			 * 退出登录
 			 */
-			_logout() {
-				// this.logout();
+			bindLogout() {
+				this.logout();
 				uni.reLaunch({
 					url: '/pages/login/login'
 				});
@@ -192,4 +195,7 @@
 
 <style>
 	@import '../../../common/uni-nvue.css';
+	.uni-my-header-image {
+		
+	}
 </style>
