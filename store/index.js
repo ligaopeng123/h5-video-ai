@@ -7,6 +7,7 @@ const store = new Vuex.Store({
 	state: {
 		token: localStorage.getItem('token'),
 		IPAddress: localStorage.getItem('IPAddress'),
+		username: '',
 		loginProvider: "",
 		openid: null,
 		testvuex:false,
@@ -16,9 +17,13 @@ const store = new Vuex.Store({
 	mutations: {
 		login(state, provider) {
 			state.token = provider.token;
+			state.username = provider.username;
+			localStorage.setItem('token', provider.token);
+			console.log(provider)
+		},
+		setIPAddress(state, provider) {
 			state.IPAddress = provider.IPAddress;
 			localStorage.setItem('IPAddress', provider.IPAddress);
-			localStorage.setItem('token', provider.token);
 		},
 		logout(state) {
 			localStorage.setItem('IPAddress', '');

@@ -53,7 +53,7 @@
 		},
 		computed: mapState(['forcedLogin']),
 		methods: {
-			...mapMutations(['login']),
+			...mapMutations(['login', 'setIPAddress']),
 			initPosition() {
 				/**
 				 * 使用 absolute 定位，并且设置 bottom 值进行定位。软键盘弹出时，底部会因为窗口变化而被顶上来。
@@ -82,15 +82,26 @@
 					username: this.username,
 					password: this.password
 				};
-				userApi.checkUser(data, (res)=> {
-					this.setToken({
-						token: 'Bearer '+ res.access_token, 
-						IPAddress: this.IPAddress
-					});
+				this.setIPAddress({IPAddress: this.IPAddress});
+				userApi.checkUser(data, ({statusCode, data, errMsg})=> {
+					if(statusCode === 200) {
+						this.setToken({
+							token: 'Bearer '+ data.access_token, 
+							username: this.username
+						});
+					} else {
+						console.log(data)
+						uni.showToast({
+							icon: 'none',
+							mask: true,
+							title: data.errorMessage,
+							duration: 2000
+						});
+					}
 				});
 			},
-			setToken({token, IPAddress}) {
-				this.login({token, IPAddress});
+			setToken({token, username}) {
+				this.login({token, username});
 				/**
 				 * 强制登录时使用reLaunch方式跳转过来
 				 * 返回首页也使用reLaunch方式
