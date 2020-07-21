@@ -2,13 +2,22 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VideoRecognitionService from './lable.js'
 
-Vue.use(Vuex)
+Vue.use(Vuex);
+
+
+function setItem(key, value) {
+	uni.setStorageSync(key, value);
+}
+
+export function getItem(key) {
+	return uni.getStorageSync(key)
+}
 
 const store = new Vuex.Store({
 	state: {
-		token: localStorage.getItem('token'),
-		IPAddress: localStorage.getItem('IPAddress'),
-		username: localStorage.getItem('username'),
+		token: getItem('token') || null,
+		IPAddress: getItem('IPAddress') || '',
+		username: getItem('username') || '',
 		loginProvider: "",
 		lable: '',
 		openid: null,
@@ -20,18 +29,16 @@ const store = new Vuex.Store({
 		login(state, provider) {
 			state.token = provider.token;
 			state.username = provider.username;
-			localStorage.setItem('token', provider.token);
-			localStorage.setItem('username', provider.username);
+			setItem('token', provider.token);
+			setItem('username', provider.username);
 		},
 		setIPAddress(state, provider) {
 			state.IPAddress = provider.IPAddress;
-			localStorage.setItem('IPAddress', provider.IPAddress);
+			setItem('IPAddress', provider.IPAddress);
 		},
 		logout(state) {
-			localStorage.setItem('IPAddress', '');
-			localStorage.setItem('token', null);
+			setItem('token', null);
 			state.token = null;
-			state.IPAddress = '';
 		},
 		setLable(state, data) {
 			state.lable = new VideoRecognitionService(data);
@@ -87,5 +94,6 @@ const store = new Vuex.Store({
 		}
 	}
 })
+
 
 export default store

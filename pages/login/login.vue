@@ -9,7 +9,7 @@
 		<view class="input-group">
 			<view class="input-row border">
 				<text class="title">账号：</text>
-				<m-input class="m-input" type="text" clearable focus v-model="username" placeholder="请输入账号"></m-input>
+				<m-input class="m-input" type="text" clearable focus v-model="name" placeholder="请输入账号"></m-input>
 			</view>
 			<view class="input-row border">
 				<text class="title">密码：</text>
@@ -17,20 +17,11 @@
 			</view>
 			<view class="input-row border">
 				<text class="title">服务器地址：</text>
-				<m-input class="m-input" type="text" clearable focus v-model="IPAddress" placeholder="请输入服务器地址"></m-input>
+				<m-input class="m-input" type="text" clearable focus v-model="IP" placeholder="请输入服务器地址"></m-input>
 			</view>
 		</view>
 		<view class="btn-row">
 			<button type="primary" class="primary" @tap="bindLogin">登录</button>
-		</view>
-		
-		<view class="oauth-row" v-if="hasProvider" v-bind:style="{top: positionTop + 'px'}">
-			<view class="oauth-image" v-for="provider in providerList" :key="provider.value">
-				<image :src="provider.image" @tap="oauth(provider.value)"></image>
-				<!-- #ifdef MP-WEIXIN -->
-				<button v-if="!isDevtools" open-type="getUserInfo" @getuserinfo="getUserInfo"></button>
-				<!-- #endif -->
-			</view>
 		</view>
 	</view>
 </template>
@@ -41,7 +32,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
-	import mInput from '../../components/m-input.vue'
+	import mInput from '@/components/m-input.vue'
 
 	export default {
 		components: {
@@ -52,14 +43,13 @@
 				businesLogoName: '视觉AI安全预警云平台',
 				logoImg: '/static/logo/Logo_changqing.png',
 				hasProvider: false,
-				username: '',
+				name: '',
+				IP: '',
 				password: '',
-				IPAddress: '',
 				positionTop: 0,
-				isDevtools: false
 			}
 		},
-		computed: mapState(['forcedLogin']),
+		computed: mapState(['IPAddress', 'username']),
 		methods: {
 			...mapMutations(['login', 'setIPAddress', 'setLable']),
 			initPosition() {
@@ -68,6 +58,7 @@
 				 * 反向使用 top 进行定位，可以避免此问题。
 				 */
 				this.positionTop = uni.getSystemInfoSync().windowHeight - 100;
+		
 			},
 			bindLogin() {
 				/**
@@ -81,21 +72,24 @@
 					});
 					return;
 				}
+				
 				/**
 				 * 下面简单模拟下服务端的处理
 				 * 检测用户账号密码是否在已注册的用户列表中
 				 * 实际开发中，使用 uni.request 将账号信息发送至服务端，客户端在回调函数中获取结果信息。
 				 */
 				const data = {
-					username: this.username,
+					username: this.name,
 					password: this.password
 				};
-				this.setIPAddress({IPAddress: this.IPAddress});
+				
+				this.setIPAddress({IPAddress: this.IP});
+				
 				userApi.checkUser(data, ({statusCode, data, errMsg, errorMessage})=> {
 					if(statusCode === 200) {
 						this.setToken({
 							token: 'Bearer '+ data.access_token, 
-							username: this.username
+							username: this.name
 						});
 					} else {
 						uni.showToast({
@@ -124,6 +118,7 @@
 			},
 		},
 		onReady() {
+			console.log(uni.getStorageSync('IPAddress'))
 			userApi.getLogo(({data})=> {
 				const OEM = data._value.OEM;
 				this.businesLogoName = OEM.getBusinesLogoName;
@@ -132,11 +127,9 @@
 					this.logoImg = logoImg;
 				}
 			})
-			
+			this.IP = this.IPAddress;
+			this.name = this.username;
 			this.initPosition();
-			// #ifdef MP-WEIXIN
-			this.isDevtools = uni.getSystemInfoSync().platform === 'devtools';
-			// #endif
 		}
 	}
 </script>

@@ -21,7 +21,6 @@ Vue.component('page-foot', pageFoot)
 Vue.component('uLink', uLink)
 
 App.mpType = 'app'
-
 const app = new Vue({
 	store,
 	...App

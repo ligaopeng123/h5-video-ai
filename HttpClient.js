@@ -1,5 +1,4 @@
-
-import store from './store'
+let [IPAddress, token] = [uni.getStorageSync('IPAddress'), uni.getStorageSync('token')];
 
 /**
  * 获取真实的请求路径
@@ -7,7 +6,6 @@ import store from './store'
  */
 const getIPAddress = function(url = '') {
 	const _urk = !url.startsWith('/') && !url.startsWith('http:') ? '/' + url : url;
-	const IPAddress = localStorage.getItem('IPAddress') || '';
 	let realUrl;
 	if (IPAddress.endsWith('/') && url.startsWith('/')) {
 		realUrl = IPAddress + url.replace('/', '');
@@ -20,8 +18,10 @@ const getIPAddress = function(url = '') {
 }
 
 
-const getAuthorization = ()=> {
-	return store.state.token
+
+
+const getAuthorization = () => {
+	return token
 }
 
 
@@ -41,7 +41,7 @@ const get = function({
 			// 'content-type': 'application/json', //自定义请求头信息
 			'Authorization': getAuthorization()
 		},
-		data: params,
+		data: params || {},
 		success: (res) => {
 			success(res);
 		}

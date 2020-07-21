@@ -3,17 +3,17 @@
 		<uni-list>
 			<uni-list-item class="home-list-item" style="display: flex;" v-for="(item, index) in list" :key="item.id"
 			 :show-arrow="false">
-				<div class="home-list-item-left">
-					<img src="../../../static/logo.png" alt="">
-				</div>
-				<div class="home-list-item-right">
+				<view class="home-list-item-left">
+					<image src="static/logo.png" alt="">
+				</view>
+				<view class="home-list-item-right">
 					<p>{{item.name}}</p>
 					<p>{{item.time}}</p>
-					<div>
+					<view>
 						<button size="mini" type="primary">处置</button>
 						<button size="mini" type="primary">拨号</button>
-					</div>
-				</div>
+					</view>
+				</view>
 			</uni-list-item>
 		</uni-list>
 	</view>
@@ -39,9 +39,9 @@
 		components: {
 			uLink
 		},
-		computed: mapState(['token']),
+		computed: mapState(['token', 'IPAddress']),
 		onLoad() {
-			if (!this.token) {
+			if (!this.token || !this.IPAddress) {
 				uni.showModal({
 					title: '未登录',
 					content: '您未登录，需要登录后才能继续',

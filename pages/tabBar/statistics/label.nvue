@@ -9,16 +9,7 @@
 			<canvas canvas-id="canvasRing" id="canvasRing" class="charts" :width="cWidth*pixelRatio" :height="cHeight*pixelRatio"
 			 :style="{{'width':cWidth+'px','height':cHeight+'px'}}" @touchstart="touchPie($event,'canvasRing')"></canvas>
 			<!--#endif-->
-			<!--#ifndef MP-ALIPAY -->
-			<canvas canvas-id="canvasRing" id="canvasRing" class="charts" @touchstart="touchPie($event,'canvasRing')"></canvas>
-			<!--#endif-->
 		</view>
-		<!-- <view class="uni-panel" v-for="item in lists" :key="item.url">
-			<view class="uni-panel-h" @click="goDetailPage(item.url)">
-				<text class="uni-panel-text">{{item.name}}</text>
-				<text class="uni-panel-icon uni-icon">&#xe470;</text>
-			</view>
-		</view> -->
 	</view>
 </template>
 <script>
@@ -26,7 +17,7 @@
 	import uCharts from '@/components/u-charts/u-charts.js';
 	import api from './api.js'
 	import Utils from '@/utils/utils.js'
-	let canvasObj = {};
+	var canvasObj = {};
 	var _self;
 	import {
 		mapState,
@@ -39,6 +30,9 @@
 		},
 		computed: {
 			...mapGetters(['lable'])
+		},
+		mounted() {
+			_self.getChartsData();
 		},
 		onLoad() {
 			_self = this;
@@ -64,7 +58,7 @@
 			//this.fillData(Data);
 		},
 		onReady() {
-			this.getChartsData();
+
 		},
 		data() {
 			return {
@@ -83,32 +77,6 @@
 				sliderMax: 50,
 				total: 0
 			}
-		},
-		// onLoad() {
-		// 	console.log(this.lable.lableKeyStr)
-		// },
-		// onReady() {
-		// 	// #ifdef APP-NVUE
-		// 	uni.preloadPage({
-		// 		url: "/pages/extUI/calendar/calendar",
-		// 		success(){
-		// 			console.log("preloadPage /pages/extUI/calendar/calendar")
-		// 		},
-		// 		fail(){
-		// 		}
-		// 	})
-		// 	// #endif
-		// },
-		onShareAppMessage() {
-			return {
-				title: '欢迎体验uni-app',
-				path: '/pages/tabBar/extUI/extUI'
-			}
-		},
-		onNavigationBarButtonTap(e) {
-			uni.navigateTo({
-				url: '/pages/about/about'
-			});
 		},
 		methods: {
 			getChartsData() {
@@ -137,21 +105,20 @@
 							data: lableData[key] || 0
 						});
 					}
-					this.showRing("canvasRing", {
-						series
-					});
+					_self.showRing("canvasRing", series);
 
 				})
 			},
 			touchPie(e, id) {
-				canvasObj[id].showToolTip(e, {
+				canvasObj.showToolTip(e, {
 					format: function(item) {
 						return item.name + ':' + item.data
 					}
 				});
 			},
-			showRing(canvasId, chartData) {
-				canvasObj[canvasId] = new uCharts({
+			showRing(canvasId, series) {
+				console.log(series)
+				canvasObj = new uCharts({
 					$this: _self,
 					canvasId: canvasId,
 					colors: _self.lable.colors,
@@ -169,7 +136,7 @@
 					},
 					background: '#FFFFFF',
 					pixelRatio: _self.pixelRatio,
-					series: chartData.series,
+					series: series,
 					animation: true,
 					width: _self.cWidth * _self.pixelRatio,
 					height: _self.cHeight * _self.pixelRatio,
@@ -184,37 +151,22 @@
 						}
 					},
 				});
-
-			},
-			goDetailPage(path) {
-				if (this.navigateFlag) {
-					return;
-				}
-				this.navigateFlag = true;
-				uni.navigateTo({
-					url: '/pages/extUI/' + path + '/' + path
-				});
-				setTimeout(() => {
-					this.navigateFlag = false;
-				}, 200)
 			}
 		}
 	}
 </script>
 
 <style>
-	@import '../../../common/uni-nvue.css';
+	@import '@/common/uni-nvue.css';
 
 	/* 通用样式 */
 	.qiun-charts {
-		width: 750rpx;
-		height: 600rpx;
-		background-color: #FFFFFF;
+		width: 700rpx;
+		height: 950rpx;
 	}
 
 	.charts {
-		width: 750rpx;
-		height: 600rpx;
-		background-color: #FFFFFF;
+		width: 700rpx;
+		height: 950rpx;
 	}
 </style>
