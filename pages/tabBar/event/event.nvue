@@ -38,14 +38,15 @@
 		mapMutations
 	} from 'vuex'
 	import homeApi from './home-api.js'
-	var _this = this;
+	var _this;
 	export default {
 		components: {
 			uLink
 		},
 		computed: mapState(['token', 'IPAddress']),
 		onLoad() {
-			if (!this.token || !this.IPAddress) {
+			_this = this;
+			if (!_this.token || !_this.IPAddress) {
 				uni.showModal({
 					title: '未登录',
 					content: '您未登录，需要登录后才能继续',
