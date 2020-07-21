@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<view class="img">
-			<image :src="'http://192.168.1.78:81/' + homeDetailData.checkJpg" />
+			<image :src="HttpClient.getImg(homeDetailData.checkJpg)" />
 		</view>
 		<view>
 			<p class="text-overflow" :title="homeDetailData.title">事件名称：{{homeDetailData.title}}</p>
@@ -22,6 +22,7 @@
 
 	import uLink from '@/components/uLink.vue'
 	import userApi from '@/pages/login/api.js';
+	import HttpClient from '@/HttpClient.js'
 	import {
 		mapState,
 	} from 'vuex'
@@ -40,6 +41,7 @@
 		data() {
 			return {
 				detailData: {},
+				HttpClient: HttpClient
 			}
 		},
 		onUnload() {

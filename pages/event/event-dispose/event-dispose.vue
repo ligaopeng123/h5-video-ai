@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<view class="img">
-			<image :src="homeDetailData.checkJpg" alt="">
+			<image :src="HttpClient.getImg(homeDetailData.checkJpg)" alt="">
 		</view>
 		<p class="text-overflow"><text>事件名称：</text>{{homeDetailData.title}}</p>
 		<p><text>告警时间：</text>{{homeDetailData.time}}</p>
@@ -28,6 +28,7 @@
 	import uLink from '@/components/uLink.vue'
 	import userApi from '@/pages/login/api.js';
 	import disposeApi from './event-dispose-api.js'
+	import HttpClient from '@/HttpClient.js'
 	import {
 		mapState,
 	} from 'vuex'
@@ -40,10 +41,13 @@
 		onLoad() {
 			_this = this;
 		},
-		mounted() {},
+		mounted() {
+			console.log(HttpClient)
+		},
 		data() {
 			return {
-				textVlaue: ''
+				textVlaue: '',
+				HttpClient: HttpClient
 			}
 		},
 		onUnload() {},

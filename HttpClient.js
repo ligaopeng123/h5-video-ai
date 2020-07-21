@@ -18,7 +18,23 @@ const getIPAddress = function(url = '') {
 }
 
 
+const getImg = function(imgUrl = '') {
+	const ip = getIPAddress();
+	let url;
+	if (imgUrl != '') {
+		if (ip.endsWith('/') && imgUrl.startsWith('/')) {
+			url = ip + imgUrl.replace('/', '');
+		} else if (!ip.endsWith('/') && !imgUrl.startsWith('/')) {
+			url = ip + '/' + imgUrl;
+		} else {
+			url = ip + imgUrl;
+		}
+	} else {
+		return;
+	}
 
+	return url;
+}
 
 const getAuthorization = () => {
 	return token
@@ -72,7 +88,8 @@ const post = function({
 
 const HttpClient = {
 	get,
-	post
+	post,
+	getImg
 }
 
 export default HttpClient;
