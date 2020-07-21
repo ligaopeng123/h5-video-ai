@@ -5,9 +5,8 @@
 			<view>{{total}}</view>
 		</view>
 		<view class="qiun-charts">
-			<!--#ifdef MP-ALIPAY -->
-			<canvas canvas-id="canvasRing" id="canvasRing" class="charts" :width="cWidth*pixelRatio" :height="cHeight*pixelRatio"
-			 :style="{{'width':cWidth+'px','height':cHeight+'px'}}" @touchstart="touchPie($event,'canvasRing')"></canvas>
+			<!--#ifndef MP-ALIPAY -->
+			<canvas canvas-id="canvasRing" id="canvasRing" class="charts" @touchstart="touchPie($event,'canvasRing')"></canvas>
 			<!--#endif-->
 		</view>
 	</view>
@@ -105,16 +104,20 @@
 							data: lableData[key] || 0
 						});
 					}
-					_self.showRing("canvasRing", series);
+					setTimeout(() => {
+						_self.showRing("canvasRing", series);
+					}, 2000)
 
 				})
 			},
 			touchPie(e, id) {
-				canvasObj.showToolTip(e, {
-					format: function(item) {
-						return item.name + ':' + item.data
-					}
-				});
+				if(canvasObj) {
+					canvasObj.showToolTip(e, {
+						format: function(item) {
+							return item.name + ':' + item.data
+						}
+					});
+				}
 			},
 			showRing(canvasId, series) {
 				console.log(series)
