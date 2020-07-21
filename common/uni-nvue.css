@@ -119,29 +119,21 @@ page {
     font-weight: normal;
 }
 
-.home-list-item {
+.content {
+	width: 100%;
+	padding: 10px;
+	box-sizing: border-box;
+}
+
+.img {
 	width: 100%;
 	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
-
-.home-list-item >>> .uni-list-item__content {
-	flex-direction: row!important;		
-}
-
-.home-list-item-left {
-	width: 130px;
-	height: 100px;
-}
-
-.home-list-item-right {
-	margin-left: 5px;
-	flex: 1;
-	display: flex;
-	justify-content: space-around;
-	flex-direction: column;
-}
-
-.home-list-item-right > div > button{
-	margin: 0 2px 0;
+.text-overflow {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }

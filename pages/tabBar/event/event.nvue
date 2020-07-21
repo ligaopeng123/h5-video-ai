@@ -1,21 +1,24 @@
 <template>
 	<view class="uni-container">
-		<uni-list>
-			<uni-list-item class="home-list-item" style="display: flex;" v-for="(item, index) in list" :key="item.id"
-			 :show-arrow="false">
-				<view class="home-list-item-left">
-					<image src="static/logo.png" alt="">
-				</view>
-				<view class="home-list-item-right">
-					<p>{{item.name}}</p>
-					<p>{{item.time}}</p>
-					<view>
-						<button size="mini" type="primary">处置</button>
-						<button size="mini" type="primary">拨号</button>
+		<view v-for="(item, index) in list" :key="item.id">
+			<uni-list>
+				<uni-list-item class="home-list-item" style="display: flex;" :show-arrow="false">
+					<view class="home-list-item-left">
+						<image :src="item.checkJpg + '_130x130'" alt="" mode="widthFix" @tap="previewImg(item.checkJpg)">
 					</view>
-				</view>
-			</uni-list-item>
-		</uni-list>
+					<view class="home-list-item-right">
+						<p @tap="goToDetail(index)" class="item-right-title">{{item.title}}</p>
+						<p>{{item.time}}</p>
+						<uni-tag text="标签" size="small"></uni-tag>
+						<p>
+							<button size="mini" type="primary" @tap="goToDispose(index)" v-if="item.status == 0">处置</button>
+							<button size="mini" type="primary" @tap="phoneCall()">拨号</button>
+						</p>
+					</view>
+				</uni-list-item>
+			</uni-list>
+		</view>
+		<view class="uni-loadmore" v-if="showLoadMore">{{loadMoreText}}</view>
 	</view>
 </template>
 <script>
@@ -35,6 +38,7 @@
 		mapMutations
 	} from 'vuex'
 	import homeApi from './home-api.js'
+	var _this = this;
 	export default {
 		components: {
 			uLink
@@ -63,79 +67,139 @@
 			}
 		},
 		mounted() {
+			// 获取首页List数据之前先拿到label映射数据
 			userApi.parsingclass(({
 				data
 			}) => {
 				const lableData = data.data;
-				this.setLable(lableData);
-				this.getData();
+				_this.setLable(lableData);
+				_this.getData(false);
+				_this.getPhoneData();
 			})
-
 		},
 		data() {
 			return {
-				list: [],
+				total: 0,
+				list: [
+					/* {
+					title: "前台_04",
+					checkName: "lei-chun-qiao",
+					checkJpg: "group1/M00/04/82/wKgBT18VLd2APHQWAAARCEZOLIU967.jpg",
+					time: "1595223511000"
+				}, */
+				],
 				pageSize: 10,
 				pageNumber: 1,
-				navigateFlag: false
+				navigateFlag: false,
+				loadMoreText: "加载中...",
+				showLoadMore: false,
+				max: 0,
+				phoneList: []
 			}
 		},
-		onShareAppMessage() {
-			return {
-				title: '欢迎体验uni-app',
-				path: '/pages/tabBar/component/component'
-			}
+		onUnload() {
+			_this.max = 0,
+				_this.data = [],
+				_this.loadMoreText = "加载更多",
+				_this.showLoadMore = false;
 		},
-		onNavigationBarButtonTap(e) {
-			uni.navigateTo({
-				url: '/pages/about/about'
-			});
+		onShareAppMessage() {},
+		onNavigationBarButtonTap(e) {},
+		onReachBottom() {
+			if (_this.max > _this.total) {
+				_this.loadMoreText = "没有更多数据了!"
+				return;
+			}
+			_this.pageNumber++;
+			_this.showLoadMore = true;
+			_this.getData(true);
+		},
+		onPullDownRefresh() {
+			_this.max = 0;
+			_this.list = [];
+			_this.pageNumber = 1;
+			_this.getData(false);
 		},
 		methods: {
-			...mapMutations(['setLable']),
-			getData() {
-				homeApi.getHomeData({
-					pageSize: this.pageSize,
-					pageNumber: this.pageNumber,
-					// params: '[{term: \'status = 0\'}, {term: \'time_norm BETWEEN ' + p.startTime + ' and ' + p.endTime + '\'}]',
-					sortName: 'time_norm',
-					fields: '[{f:\'*\',v:\'\'}]',
-					sortOrder: 'desc',
+			...mapMutations(['setLable', 'setHomeDetailData']),
+			getPhoneData() {
+				homeApi.getPhoneData({
+					regType: 'app',
+					regCfgKey: 'phone'
 				}, (res) => {
-					console.log(res);
+					if (res.data.records) {
+						_this.phoneList = res.data.records[0].cfgValue.split(',');
+					}
 				});
 			},
-			triggerCollapse(e) {
-				if (!this.list[e].pages) {
-					this.goDetailPage(this.list[e].url);
+			getData(loading) {
+				homeApi.getHomeData({
+					pageSize: _this.pageSize,
+					pageNumber: _this.pageNumber,
+					sortName: 'time_norm',
+					sortOrder: 'desc',
+				}, (res) => {
+					if (res.data.rows) {
+						let data = res.data.rows.map(item => {
+							item.title = item.device_name + ' | 预警 | ' + item.checkName;
+							item.time = util.timestampToTime(item.time_norm, null);
+							return item;
+						});
+						if (loading) {
+							_this.max += 10;
+							_this.list = _this.list.concat(data);
+						} else {
+							_this.list = data;
+							_this.max += 10;
+							uni.stopPullDownRefresh();
+						}
+						_this.total = res.total;
+					}
+				});
+			},
+			phoneCall() {
+				if (!_this.phoneList.length) {
+					uni.showModal({
+						title: "警告",
+						content: "不存在可拨打电话，请前往PC系统添加!",
+						showCancel: false,
+						confirmText: "确定"
+					})
 					return;
 				}
-				for (var i = 0; i < this.list.length; ++i) {
-					if (e === i) {
-						this.list[i].open = !this.list[e].open;
-					} else {
-						this.list[i].open = false;
-					}
+				if (_this.phoneList.length == 1) {
+					uni.makePhoneCall({
+						phoneNumber: _this.phoneList[0],
+						success: () => {
+							console.log("成功拨打电话")
+						}
+					});
+				} else {
+					_this.goDetailPage('make-phone-call', _this.phoneList);
 				}
 			},
-			goDetailPage(e) {
-				if (this.navigateFlag) {
-					return;
-				}
-				this.navigateFlag = true;
-				if (typeof e === 'string') {
-					uni.navigateTo({
-						url: '/pages/component/' + e + '/' + e
-					})
-				} else {
-					uni.navigateTo({
-						url: e.url
-					})
-				}
-				setTimeout(() => {
-					this.navigateFlag = false;
-				}, 200)
-			}
+			goToDetail(index) {
+				_this.setHomeDetailData(_this.list[index]);
+				_this.goDetailPage('event-detail');
+			},
+			goToDispose(index) {
+				_this.setHomeDetailData(_this.list[index]);
+				_this.goDetailPage('event-dispose');
+			},
+			goDetailPage(e, params) {
+				let url = `/pages/event/${e}/${e}${params ? '?item=' + JSON.stringify(params) : ''}`;
+				uni.navigateTo({
+					url: url
+				})
+			},
+			previewImg(logourl) {
+				let imgsArray = [];
+				imgsArray[0] = logourl;
+				uni.previewImage({
+					current: 0,
+					urls: imgsArray
+				});
+			},
 		}
 	}
 </script>
@@ -146,6 +210,7 @@
 	.home-list-item {
 		width: 100%;
 		display: flex;
+		border-bottom: solid 1px #cccc;
 	}
 
 
@@ -155,18 +220,35 @@
 
 	.home-list-item-left {
 		width: 130px;
-		height: 100px;
+		height: 130px;
+		display: flex !important;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.home-list-item-left>image {
+		width: 130px;
 	}
 
 	.home-list-item-right {
-		margin-left: 5px;
 		flex: 1;
+		padding-left: 5px;
 		display: flex;
 		justify-content: space-around;
 		flex-direction: column;
 	}
 
-	.home-list-item-right>div>button {
+	.home-list-item-right>p {
+		width: 100%;
+	}
+
+	.item-right-title {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.home-list-item-right>p>button {
 		margin: 0 2px 0;
 	}
 </style>

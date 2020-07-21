@@ -5,6 +5,7 @@
 			"path": "pages/tabBar/event/event",
 			"style": {
 				"navigationBarTitleText": "预警事件",
+				"enablePullDownRefresh": true,
 				"app-plus": {
 					"bounce": "vertical",
 					"titleNView": {
@@ -50,6 +51,12 @@
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "登录"
+			}
+		},
+		{
+			"path": "pages/component/view/view",
+			"style": {
+				"navigationBarTitleText": "view"
 			}
 		},
 		{
@@ -297,6 +304,28 @@
 		}
 	],
 	"subPackages": [{
+			"root": "pages/event",
+			"pages": [{
+					"path": "make-phone-call/make-phone-call",
+					"style": {
+						"navigationBarTitleText": "拨打电话"
+					}
+				},
+				{
+					"path": "event-detail/event-detail",
+					"style": {
+						"navigationBarTitleText": "事件详情"
+					}
+				},
+				{
+					"path": "event-dispose/event-dispose",
+					"style": {
+						"navigationBarTitleText": "事件处理"
+					}
+				}
+			]
+		},
+		{
 			"root": "pages/API",
 			"pages": [{
 					"path": "login/login",
@@ -346,12 +375,6 @@
 					"path": "get-user-info/get-user-info",
 					"style": {
 						"navigationBarTitleText": "获取用户信息"
-					}
-				},
-				{
-					"path": "request-payment/request-payment",
-					"style": {
-						"navigationBarTitleText": "发起支付"
 					}
 				},
 				{
@@ -479,12 +502,6 @@
 					"path": "on-compass-change/on-compass-change",
 					"style": {
 						"navigationBarTitleText": "监听罗盘数据"
-					}
-				},
-				{
-					"path": "make-phone-call/make-phone-call",
-					"style": {
-						"navigationBarTitleText": "打电话"
 					}
 				},
 				{
