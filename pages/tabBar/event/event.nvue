@@ -1,21 +1,27 @@
 <template>
 	<view class="uni-container">
-		<view v-for="(item, index) in list" :key="item.id">
+		<view>
 			<uni-list>
-				<uni-list-item class="home-list-item" style="display: flex;" :show-arrow="false">
-					<view class="home-list-item-left">
-						<image :src="item.checkJpg + '_130x130'" alt="" mode="widthFix" @tap="previewImg(item.checkJpg)">
-					</view>
-					<view class="home-list-item-right">
-						<p @tap="goToDetail(index)" class="item-right-title">{{item.title}}</p>
-						<p>{{item.time}}</p>
-						<uni-tag text="标签" size="small"></uni-tag>
+				<uni-grid v-for="(item, index) in list" :key="item.id" :column="2" :show-border="false" class="home-list-item">
+					<uni-grid-item class="home-list-item-left">
+						<image  style="width: 100%;":src="item.checkJpg + '_130x130'" alt="" mode="widthFix" @tap="previewImg(item.checkJpg)">
+					</uni-grid-item>
+					<uni-grid-item>
+						<view class="text-overflow">
+							{{item.title}}
+						</view>
+						<view>
+							{{item.time}}
+						</view>
+						<view>
+							<uni-tag text="标签" size="small"></uni-tag>
+						</view>
 						<p>
 							<button size="mini" type="primary" @tap="goToDispose(index)" v-if="item.status == 0">处置</button>
 							<button size="mini" type="primary" @tap="phoneCall()">拨号</button>
 						</p>
-					</view>
-				</uni-list-item>
+					</uni-grid-item>
+				</uni-grid>
 			</uni-list>
 		</view>
 		<view class="uni-loadmore" v-if="showLoadMore">{{loadMoreText}}</view>
@@ -39,6 +45,7 @@
 		mapMutations
 	} from 'vuex'
 	import homeApi from './home-api.js'
+	import HttpClient from '@/HttpClient.js'
 	var _this;
 	export default {
 		components: {
@@ -47,10 +54,6 @@
 		computed: mapState(['token', 'IPAddress', 'homeData']),
 		onLoad() {
 			_this = this;
-			uni.$on('websocket', res => {
-				_this.$set(_this.list, 0, _this.dataProcessing(res.data));
-			});
-
 			if (!_this.token || !_this.IPAddress) {
 				uni.showModal({
 					title: '未登录',
@@ -69,6 +72,10 @@
 							});
 						}
 					}
+				});
+			} else {
+				uni.$on('websocket', res => {
+					// _this.list = [_this.dataProcessing(res.data)].concat(_this.list)
 				});
 			}
 		},
@@ -199,13 +206,14 @@
 			},
 			goDetailPage(e, params) {
 				let url = `/pages/event/${e}/${e}${params ? '?item=' + JSON.stringify(params) : ''}`;
+				console.log(url)
 				uni.navigateTo({
 					url: url
 				})
 			},
 			previewImg(logourl) {
 				let imgsArray = [];
-				imgsArray[0] = logourl;
+				imgsArray[0] = HttpClient.getImg(logourl);
 				uni.previewImage({
 					current: 0,
 					urls: imgsArray
@@ -240,6 +248,7 @@
 	.home-list-item-left {
 		width: 130px;
 		height: 130px;
+		padding: 10px;
 		display: flex !important;
 		align-items: center;
 		justify-content: center;
@@ -261,13 +270,13 @@
 		width: 100%;
 	}
 
-	.item-right-title {
+	.home-list-item-right>p>button {
+		margin: 0 2px 0;
+	}
+	
+	.text-overflow {
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
-	}
-
-	.home-list-item-right>p>button {
-		margin: 0 2px 0;
 	}
 </style>
