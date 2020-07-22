@@ -74,14 +74,17 @@
 		},
 		mounted() {
 			// 获取首页List数据之前先拿到label映射数据
-			userApi.parsingclass(({
-				data
-			}) => {
+			// errorMessage: "此token为黑名单"
+			if (data && data.errorMessage === '此token为黑名单') {
+				uni.reLaunch({
+					url: '/pages/login/login'
+				});
+			} else {
 				const lableData = data.data;
 				_this.setLable(lableData);
 				_this.getData(false);
 				_this.getPhoneData();
-			})
+			}
 		},
 		data() {
 			return {
