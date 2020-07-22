@@ -2,8 +2,8 @@
 	<view class="uni-container">
 		<view>
 			<uni-list>
-				<uni-grid v-for="(item, index) in list" :key="item.id" :column="2" :show-border="false" class="home-list-item">
-					<uni-grid-item class="home-list-item-left">
+				<uni-grid v-for="(item, index) in list" :key="item.id" :column="2" :show-border="false">
+					<uni-grid-item>
 						<image style="width: 100%;" :src="item.checkJpg + '_130x130'" alt="" mode="widthFix" @tap="previewImg(item.checkJpg)">
 					</uni-grid-item>
 					<uni-grid-item>
@@ -234,11 +234,11 @@
 		background-color: #f8f8f8;
 	}
 
-	.home-list-item {
+	/* .home-list-item {
 		width: 100%;
 		display: flex;
 		border-bottom: solid 1px #cccc;
-	}
+	} */
 
 
 	/*
