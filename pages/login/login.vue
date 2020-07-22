@@ -1,6 +1,6 @@
 <template>
-	<view class="content content-background">
-		<view class="uni-header-logo">
+	<view class="content-background">
+		<view class="uni-header-logo header-logo-img">
 			<image class="uni-header-image" :src="logoImg"></image>
 		</view>
 		<view class="uni-header-logo busines-logo-name">
@@ -118,7 +118,6 @@
 			},
 		},
 		onReady() {
-			console.log(uni.getStorageSync('IPAddress'))
 			userApi.getLogo(({data})=> {
 				const OEM = data._value.OEM;
 				this.businesLogoName = OEM.getBusinesLogoName;
@@ -135,6 +134,31 @@
 </script>
 
 <style>
+	.content-background {
+		background: url(@/static/logo/login.png) no-repeat fixed top;
+		height: 100%;
+		width: 100%;
+		z-index: 9999;
+	}
+	
+	.uni-header-logo {
+	    padding: 30rpx;
+	    flex-direction: column;
+	    justify-content: center;
+	    align-items: center;
+		text-align: center;
+		margin-top: 0px;
+	}
+	
+	.header-logo-img {
+		padding-top: 150rpx !important;
+	}
+	
+	.uni-header-image {
+	    width: 100px;
+	    height: 100px;
+	}
+	
 	.action-row {
 		display: flex;
 		flex-direction: row;
@@ -180,15 +204,7 @@
 		height: 100%;
 		opacity: 0;
 	}
-	.content-background {
-		background: url(@/static/logo/login.png) no-repeat fixed top;
-		height: 100%;
-		top: -45px;
-		width: calc(100% - 20px);
-		height: calc(100% + 25px);
-		position: absolute;
-		z-index: 9999;
-	}
+	
 	/* 重写样式 */
 	.uni-header-image {
 		width: 50%;

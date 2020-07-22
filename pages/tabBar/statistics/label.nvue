@@ -5,14 +5,16 @@
 			<view>{{total}}</view>
 		</view>
 		<view class="qiun-charts">
+			<!--#ifdef MP-ALIPAY -->
+			<canvas canvas-id="canvasRing" id="canvasRing" class="charts" :style="{'width':cWidth*pixelRatio+'px','height':cHeight*pixelRatio+'px', 'transform': 'scale('+(1/pixelRatio)+')','margin-left':-cWidth*(pixelRatio-1)/2+'px','margin-top':-cHeight*(pixelRatio-1)/2+'px'}" @touchstart="touchPie"></canvas>
+			<!--#endif-->
 			<!--#ifndef MP-ALIPAY -->
-			<canvas canvas-id="canvasRing" id="canvasRing" class="charts" @touchstart="touchPie($event,'canvasRing')"></canvas>
+			<canvas canvas-id="canvasRing" id="canvasRing" class="charts" @touchstart="touchPie"></canvas>
 			<!--#endif-->
 		</view>
 	</view>
 </template>
 <script>
-	import uLink from "@/components/uLink.vue"
 	import uCharts from '@/components/u-charts/u-charts.js';
 	import api from './api.js'
 	import Utils from '@/utils/utils.js'
@@ -24,14 +26,12 @@
 		mapMutations
 	} from 'vuex'
 	export default {
-		components: {
-			uLink
-		},
+		components: {},
 		computed: {
 			...mapGetters(['lable'])
 		},
 		mounted() {
-			_self.getChartsData();
+			console.log(555)
 		},
 		onLoad() {
 			_self = this;
@@ -46,34 +46,17 @@
 				}
 			});
 			//#endif
-			this.cWidth = uni.upx2px(750);
-			this.cHeight = uni.upx2px(500);
-			this.cWidth2 = uni.upx2px(700);
-			this.cHeight2 = uni.upx2px(1100);
-			this.cWidth3 = uni.upx2px(250);
-			this.cHeight3 = uni.upx2px(250);
-			this.arcbarWidth = uni.upx2px(24);
-			this.gaugeWidth = uni.upx2px(30);
-			//this.fillData(Data);
-		},
-		onReady() {
-
+			this.$nextTick(()=>{
+				_self.cWidth = uni.upx2px(750);
+				_self.cHeight = uni.upx2px(700);
+				_self.getChartsData();
+			});
 		},
 		data() {
 			return {
-				cWidth: '',
-				cHeight: '',
-				cWidth2: '', //横屏图表
-				cHeight2: '', //横屏图表
-				cWidth3: '', //圆弧进度图
-				cHeight3: '', //圆弧进度图
-				arcbarWidth: '', //圆弧进度图，进度条宽度,此设置可使各端宽度一致
-				gaugeWidth: '', //仪表盘宽度,此设置可使各端宽度一致
-				tips: '',
+				cWidth: 428,
+				cHeight: 399,
 				pixelRatio: 1,
-				serverData: '',
-				itemCount: 30, //x轴单屏数据密度
-				sliderMax: 50,
 				total: 0
 			}
 		},
@@ -104,9 +87,7 @@
 							data: lableData[key] || 0
 						});
 					}
-					setTimeout(() => {
-						_self.showRing("canvasRing", series);
-					}, 2000)
+					_self.showRing("canvasRing", series);
 
 				})
 			},
@@ -120,7 +101,6 @@
 				}
 			},
 			showRing(canvasId, series) {
-				console.log(series)
 				canvasObj = new uCharts({
 					$this: _self,
 					canvasId: canvasId,
@@ -164,12 +144,12 @@
 
 	/* 通用样式 */
 	.qiun-charts {
-		width: 700rpx;
-		height: 950rpx;
+		width: 750upx;
+		height: 700upx;
 	}
 
 	.charts {
-		width: 700rpx;
-		height: 950rpx;
+		width: 750upx;
+		height: 700upx;
 	}
 </style>

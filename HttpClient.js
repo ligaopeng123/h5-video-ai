@@ -67,7 +67,8 @@ const get = function({
 const post = function({
 	url,
 	params,
-	success
+	success,
+	Authorization
 }) {
 	uni.request({
 		method: 'POST',
@@ -75,7 +76,7 @@ const post = function({
 		url: getIPAddress(url),
 		header: {
 			// 'content-type': 'application/json', //自定义请求头信息
-			'Authorization': getAuthorization() //自定义请求头信息
+			'Authorization': Authorization === null ? null : getAuthorization() //自定义请求头信息
 		},
 		data: params,
 		success: (res) => {

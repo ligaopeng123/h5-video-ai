@@ -50,7 +50,8 @@
 		{
 			"path": "pages/login/login",
 			"style": {
-				"navigationBarTitleText": "登录"
+				"navigationStyle": "custom",
+				"titleNView": false
 			}
 		}
 	],

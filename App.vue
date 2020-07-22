@@ -1,13 +1,13 @@
 <script>
-	import ws from '@/websocket/ws.js'
-	import {SockJS} from '@/websocket/sockjs.min.js'
+	// import ws from '@/websocket/ws.js'
+	// import {SockJS} from '@/websocket/sockjs.min.js'
 	import HttpClient from '@/HttpClient.js'
 	var _this;
     export default {
         onLaunch: function() {
 			_this = this;
-			_this.connect();
-			_this.subscribe();
+			// _this.connect();
+			// _this.subscribe();
             console.log('App Launch');
             // #ifdef APP-PLUS
             // 检测升级

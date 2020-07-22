@@ -10,6 +10,7 @@ const checkUser = function(userInfo, success) {
 	HttpClient.post({
 		url: '/oauth2/mobile/token',
 		params: userInfo,
+		Authorization: null,
 		success
 	})
 }
