@@ -1,10 +1,9 @@
-let [IPAddress, token] = [uni.getStorageSync('IPAddress'), uni.getStorageSync('token')];
-
 /**
  * 获取真实的请求路径
  * @param {Object} url
  */
 const getIPAddress = function(url = '') {
+	const IPAddress = uni.getStorageSync('IPAddress')
 	const _urk = !url.startsWith('/') && !url.startsWith('http:') ? '/' + url : url;
 	let realUrl;
 	if (IPAddress.endsWith('/') && url.startsWith('/')) {
@@ -14,30 +13,29 @@ const getIPAddress = function(url = '') {
 	} else {
 		realUrl = IPAddress + url;
 	}
+	if (!realUrl.startsWith('http')) {
+		realUrl.startsWith('/') ? realUrl = 'http:/' + realUrl : 'http://' + realUrl;
+	}
 	return realUrl;
 }
 
 
 const getImg = function(imgUrl = '') {
 	const ip = getIPAddress();
-	let url;
-	if (imgUrl != '') {
-		if (ip.endsWith('/') && imgUrl.startsWith('/')) {
-			url = ip + imgUrl.replace('/', '');
-		} else if (!ip.endsWith('/') && !imgUrl.startsWith('/')) {
-			url = ip + '/' + imgUrl;
-		} else {
-			url = ip + imgUrl;
-		}
+	let url = imgUrl || '';
+	if (ip.endsWith('/') && url.startsWith('/')) {
+		url = ip + url.replace('/', '');
+	} else if (!ip.endsWith('/') && !url.startsWith('/')) {
+		url = ip + '/' + url;
 	} else {
-		return;
+		url = ip + url;
 	}
 
 	return url;
 }
 
 const getAuthorization = () => {
-	return token
+	return uni.getStorageSync('token')
 }
 
 
@@ -49,6 +47,7 @@ const get = function({
 	params,
 	success
 }) {
+	console.log(getIPAddress(url))
 	uni.request({
 		method: 'GET',
 		// dataType: 'json',
