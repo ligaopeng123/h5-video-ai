@@ -1,6 +1,13 @@
 <script>
+	import ws from '@/websocket/ws.js'
+	import {SockJS} from '@/websocket/sockjs.min.js'
+	import HttpClient from '@/HttpClient.js'
+	var _this;
     export default {
         onLaunch: function() {
+			_this = this;
+			_this.connect();
+			_this.subscribe();
             console.log('App Launch');
             // #ifdef APP-PLUS
             // 检测升级
@@ -37,6 +44,50 @@
         },
 		globalData: {
 			test: ''
+		},
+		mounted() {
+		},
+		methods: {
+			/**
+			 * 创建连接
+			 */
+			connect() {
+				var socket = new SockJS(HttpClient.getIPAddress() + 'api/websocket');
+				ws.connect(socket)
+			},
+			/**
+			 * 断开连接
+			 */
+			disconnect(aa) {
+				ws.disconnect()
+			},
+			/**
+			 * 订阅
+			 */
+			subscribe() {
+				console.log(this.message, ws)
+				ws.subscribe("/user/super/queue/subscribe", this.message)
+			},
+			/**
+			 * 取消订阅
+			 */
+			unsubscribe() {
+				ws.unsubscribe("/user/super/queue/subscribe")
+			},
+			/**
+			 * 接收消息
+			 * @param {Object} data
+			 */
+			message(data) {
+				console.log(data)
+				this.dataList.push(data.body)
+			},
+			/**
+			 * 向服务端发送消息
+			 */
+			send() {
+				ws.send('/app/websocktmsgs', this.msg)
+			}
 		}
     }
 </script>
@@ -84,38 +135,38 @@
     }
 
     /* #endif*/
-	
 
-		
+
+
 	/* #ifdef MP-BAIDU */
 	page {
 		width: 100%;
 		height: 100%;
 		display: block;
 	}
-		
+
 	swan-template {
 		width: 100%;
 		min-height: 100%;
 		display: flex;
 	}
-		
+
 	/* 原生组件模式下需要注意组件外部样式 */
 	custom-component {
 		width: 100%;
 		min-height: 100%;
 		display: flex;
 	}
-		
+
 	/* #endif */
-		
+
 	/* #ifdef MP-ALIPAY */
 	page {
 		min-height: 100vh;
 	}
-		
+
 	/* #endif */
-		
+
 	/* 原生组件模式下需要注意组件外部样式 */
 	m-input {
 		width: 100%;
@@ -123,7 +174,7 @@
 		display: flex;
 		flex: 1;
 	}
-		
+
 	.content {
 		display: flex;
 		flex: 1;
@@ -131,13 +182,13 @@
 		background-color: #efeff4;
 		padding: 10px;
 	}
-		
+
 	.input-group {
 		background-color: #ffffff;
 		margin-top: 20px;
 		position: relative;
 	}
-		
+
 	.input-group::before {
 		position: absolute;
 		right: 0;
@@ -149,7 +200,7 @@
 		transform: scaleY(.5);
 		background-color: #c8c7cc;
 	}
-		
+
 	.input-group::after {
 		position: absolute;
 		right: 0;
@@ -161,7 +212,7 @@
 		transform: scaleY(.5);
 		background-color: #c8c7cc;
 	}
-		
+
 	.input-row {
 		display: flex;
 		flex-direction: row;
@@ -169,12 +220,12 @@
 		font-size: 18px;
 		line-height: 40px;
 	}
-		
+
 	.input-row .title {
 		width: 120px;
 		padding-left: 15px;
 	}
-		
+
 	.input-row.border::after {
 		position: absolute;
 		right: 0;
@@ -186,12 +237,12 @@
 		transform: scaleY(.5);
 		background-color: #c8c7cc;
 	}
-		
+
 	.btn-row {
 		margin-top: 25px;
 		padding: 10px;
 	}
-		
+
 	button.primary {
 		background-color: #0faeff;
 	}

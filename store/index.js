@@ -24,7 +24,7 @@ const store = new Vuex.Store({
 		testvuex:false,
         colorIndex: 0,
         colorList: ['#FF0000','#00FF00','#0000FF'],
-		homeDetailData: {}
+		homeDetailData: {},
 	},
 	mutations: {
 		login(state, provider) {

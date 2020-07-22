@@ -47,7 +47,6 @@ const get = function({
 	params,
 	success
 }) {
-	console.log(getIPAddress(url))
 	uni.request({
 		method: 'GET',
 		// dataType: 'json',
@@ -88,7 +87,8 @@ const post = function({
 const HttpClient = {
 	get,
 	post,
-	getImg
+	getImg,
+	getIPAddress
 }
 
 export default HttpClient;
