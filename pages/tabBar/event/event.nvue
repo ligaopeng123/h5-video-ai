@@ -4,7 +4,7 @@
 			<uni-list>
 				<uni-grid v-for="(item, index) in list" :key="item.id" :column="2" :show-border="false" class="home-list-item">
 					<uni-grid-item class="home-list-item-left">
-						<image  style="width: 100%;":src="item.checkJpg + '_130x130'" alt="" mode="widthFix" @tap="previewImg(item.checkJpg)">
+						<image style="width: 100%;" :src="item.checkJpg + '_130x130'" alt="" mode="widthFix" @tap="previewImg(item.checkJpg)">
 					</uni-grid-item>
 					<uni-grid-item>
 						<view class="text-overflow">
@@ -241,20 +241,20 @@
 	}
 
 
+	/*
 	.home-list-item>>>.uni-list-item__content {
 		flex-direction: row !important;
 	}
-
-	.home-list-item-left {
+ .home-list-item-left {
 		width: 130px;
 		height: 130px;
 		padding: 10px;
 		display: flex !important;
 		align-items: center;
 		justify-content: center;
-	}
+	} */
 
-	.home-list-item-left>image {
+	/* .home-list-item-left>image {
 		width: 130px;
 	}
 
@@ -273,7 +273,7 @@
 	.home-list-item-right>p>button {
 		margin: 0 2px 0;
 	}
-	
+	 */
 	.text-overflow {
 		overflow: hidden;
 		text-overflow: ellipsis;
