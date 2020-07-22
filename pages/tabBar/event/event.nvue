@@ -1,6 +1,6 @@
 <template>
 	<view class="uni-container">
-		<view v-for="(item, index) in homeData" :key="item.id">
+		<view v-for="(item, index) in list" :key="item.id">
 			<uni-list>
 				<uni-list-item class="home-list-item" style="display: flex;" :show-arrow="false">
 					<view class="home-list-item-left">
@@ -48,7 +48,7 @@
 		onLoad() {
 			_this = this;
 			uni.$on('websocket', res => {
-				_this.updatePushMessage(_this.dataProcessing(res.data));
+				_this.$set(_this.list, 0, _this.dataProcessing(res.data));
 			});
 
 			if (!_this.token || !_this.IPAddress) {
@@ -74,17 +74,21 @@
 		},
 		mounted() {
 			// 获取首页List数据之前先拿到label映射数据
-			// errorMessage: "此token为黑名单"
-			if (data && data.errorMessage === '此token为黑名单') {
-				uni.reLaunch({
-					url: '/pages/login/login'
-				});
-			} else {
-				const lableData = data.data;
-				_this.setLable(lableData);
-				_this.getData(false);
-				_this.getPhoneData();
-			}
+			userApi.parsingclass(({
+				data
+			}) => {
+				// errorMessage: "此token为黑名单"
+				if (data && data.errorMessage === '此token为黑名单') {
+					uni.reLaunch({
+						url: '/pages/login/login'
+					});
+				} else {
+					const lableData = data.data;
+					_this.setLable(lableData);
+					_this.getData(false);
+					_this.getPhoneData();
+				}
+			});
 		},
 		data() {
 			return {
@@ -130,7 +134,7 @@
 			_this.getData(false);
 		},
 		methods: {
-			...mapMutations(['setLable', 'setHomeDetailData', 'updatePushMessage', 'setHomeData']),
+			...mapMutations(['setLable', 'setHomeDetailData']),
 			getPhoneData() {
 				homeApi.getPhoneData({
 					regType: 'app',
@@ -156,8 +160,7 @@
 							_this.max += 10;
 							_this.list = _this.list.concat(data);
 						} else {
-							_this.setHomeData(data)
-							// _this.list = data;
+							_this.list = data;
 							_this.max += 10;
 							uni.stopPullDownRefresh();
 						}

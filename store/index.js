@@ -25,7 +25,6 @@ const store = new Vuex.Store({
         colorIndex: 0,
         colorList: ['#FF0000','#00FF00','#0000FF'],
 		homeDetailData: {},
-		homeData: []
 	},
 	mutations: {
 		login(state, provider) {
@@ -60,12 +59,6 @@ const store = new Vuex.Store({
 		setHomeDetailData(state,index){
 		    state.homeDetailData = index
 		},
-		updatePushMessage(state,index){
-			state.homeData.push(index);
-		},
-		setHomeData(state,index){
-			state.homeData = index;
-		}
 	},
     getters:{
         currentColor(state){
