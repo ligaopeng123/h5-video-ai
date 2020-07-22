@@ -47,7 +47,7 @@ class Ws {
 				console.log('开始进行连接Connected: ' + frame);
 				// 初始化订阅
 				Object.keys(this.subscribes).forEach(key => {
-					console.log(this.subscribes)
+					// console.log(this.subscribes)
 					this.subscribe(key, this.subscribes[key].callback)
 				})
 			},

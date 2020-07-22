@@ -65,7 +65,6 @@
 			 * 订阅
 			 */
 			subscribe() {
-				console.log(this.message, ws)
 				ws.subscribe("/user/super/queue/subscribe", this.message)
 			},
 			/**
@@ -79,8 +78,8 @@
 			 * @param {Object} data
 			 */
 			message(data) {
-				console.log(data)
-				this.dataList.push(data.body)
+				uni.$emit('websocket', { data: JSON.parse(data.body).data});
+				// this.dataList.push(data.body)
 			},
 			/**
 			 * 向服务端发送消息

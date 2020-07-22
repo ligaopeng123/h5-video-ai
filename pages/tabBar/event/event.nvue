@@ -1,6 +1,6 @@
 <template>
 	<view class="uni-container">
-		<view v-for="(item, index) in list" :key="item.id">
+		<view v-for="(item, index) in homeData" :key="item.id">
 			<uni-list>
 				<uni-list-item class="home-list-item" style="display: flex;" :show-arrow="false">
 					<view class="home-list-item-left">
@@ -44,9 +44,13 @@
 		components: {
 			uLink
 		},
-		computed: mapState(['token', 'IPAddress']),
+		computed: mapState(['token', 'IPAddress', 'homeData']),
 		onLoad() {
 			_this = this;
+			uni.$on('websocket', res => {
+				_this.updatePushMessage(_this.dataProcessing(res.data));
+			});
+
 			if (!_this.token || !_this.IPAddress) {
 				uni.showModal({
 					title: '未登录',
@@ -123,7 +127,7 @@
 			_this.getData(false);
 		},
 		methods: {
-			...mapMutations(['setLable', 'setHomeDetailData']),
+			...mapMutations(['setLable', 'setHomeDetailData', 'updatePushMessage', 'setHomeData']),
 			getPhoneData() {
 				homeApi.getPhoneData({
 					regType: 'app',
@@ -143,15 +147,14 @@
 				}, (res) => {
 					if (res.data.rows) {
 						let data = res.data.rows.map(item => {
-							item.title = item.device_name + ' | 预警 | ' + item.checkName;
-							item.time = util.timestampToTime(item.time_norm, null);
-							return item;
+							return _this.dataProcessing(item)
 						});
 						if (loading) {
 							_this.max += 10;
 							_this.list = _this.list.concat(data);
 						} else {
-							_this.list = data;
+							_this.setHomeData(data)
+							// _this.list = data;
 							_this.max += 10;
 							uni.stopPullDownRefresh();
 						}
@@ -202,12 +205,20 @@
 					urls: imgsArray
 				});
 			},
+			dataProcessing(item) {
+				item.title = item.device_name + ' | 预警 | ' + item.checkName;
+				item.time = util.timestampToTime(item.time_norm, null);
+				return item;
+			}
 		}
 	}
 </script>
 
 <style>
-	@import '../../../common/uni-nvue.css';
+	.uni-container {
+		padding: 15px;
+		background-color: #f8f8f8;
+	}
 
 	.home-list-item {
 		width: 100%;

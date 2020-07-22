@@ -104,8 +104,6 @@
 </script>
 
 <style>
-	@import '@/common/uni-nvue.css';
-
 	.disposeUser {
 		display: flex;
 	}
@@ -125,4 +123,24 @@
 	.bottom-botton>button {
 		margin: 0;
 	}
+	
+	.content {
+		width: 100%;
+		padding: 10px;
+		box-sizing: border-box;
+	}
+	
+	.img {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	
+	.text-overflow {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	
 </style>
