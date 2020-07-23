@@ -14,17 +14,21 @@ export default class VideoRecognitionService {
 	constructor(lableData) {
 		const defaultType = {};
 		const colors = [];
+		const defaultColor = {};
 		lableData.forEach((item, index) => {
 			defaultType[item.value] = item.label;
-			colors.push(item.color)
+			colors.push(item.color);
+			defaultColor[item.value] = item.color;
 		});
 		this.colors = colors;
 		this.defaultType = defaultType;
+		this.defaultColor = defaultColor;
 		this.lableKey = Object.keys(this.defaultType);
 		this.lableKeyStr = this.lableKey.join(',');
 	}
 	colors;
 	defaultType;
+	defaultColor;
 	/**
 	 * 所有常用参数都引入缓存机制  节省性能
 	 */
@@ -109,6 +113,9 @@ export default class VideoRecognitionService {
 		return this.defaultType;
 	}
 
+	getColorByLable(lable) {
+		return this.defaultColor[lable];
+	}
 	/***
 	 * 获取列表数据每一条的label集合
 	 * @return {{label01:1,label02:0，label03:0，label04:0}}

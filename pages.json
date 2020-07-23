@@ -3,6 +3,7 @@
 			"path": "pages/event/event",
 			"style": {
 				"navigationBarTitleText": "预警事件",
+				"enablePullDownRefresh": true,
 				"navigationBarTextStyle": "black"
 			}
 		},
@@ -288,6 +289,7 @@
 		"navigationBarTitleText": "视觉ai",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8",
+		"autoscan":true,
 		"mp-alipay": {
 			"titleBarColor": "#FFFFFF"
 		}

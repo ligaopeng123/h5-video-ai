@@ -2,26 +2,35 @@
 	<view class="uni-container">
 		<view>
 			<uni-list>
-				<uni-grid v-for="(item, index) in list" :key="item.id" :column="2" :show-border="false">
-					<uni-grid-item>
-						<image style="width: 100%;" :src="item.checkJpg + '_130x130'" alt="" mode="widthFix" @tap="previewImg(item.checkJpg)">
-					</uni-grid-item>
-					<uni-grid-item>
-						<view class="text-overflow">
+				<view class="home-list-item" :show-arrow="false" v-for="(item, index) in list" :key="item.id">
+					<view class="home-list-item-left">
+						<image :src="HttpClient.getImg(item.checkJpg) + '_130x130'" alt="" mode="widthFix" @tap="previewImg(item.checkJpg)">
+					</view>
+					<view class="home-list-item-right">
+						<p class="text-overflow">
 							{{item.title}}
-						</view>
+						</p>
 						<view>
 							{{item.time}}
 						</view>
-						<view>
-							<uni-tag text="标签" size="small"></uni-tag>
-						</view>
+						<scroll-view class="view-scroll" :scroll-x="true" :show-scrollbar="false">
+							<app-tags v-for="(item, index) in item.alarmClass" :key="index" :text="getTagsText(item)" :color="getColor(item)"></app-tags>
+							<app-tags :text="'标签'" :color="'#cccc'"></app-tags>
+							<app-tags :text="'标签'" :color="'#cccc'"></app-tags>
+							<app-tags :text="'标签'" :color="'#cccc'"></app-tags>
+							<app-tags :text="'标签'" :color="'#cccc'"></app-tags>
+							<app-tags :text="'标签'" :color="'#cccc'"></app-tags>
+							<app-tags :text="'标签'" :color="'#cccc'"></app-tags>
+							<app-tags :text="'标签'" :color="'#cccc'"></app-tags>
+							<app-tags :text="'标签'" :color="'#cccc'"></app-tags>
+							<app-tags :text="'标签'" :color="'#cccc'"></app-tags>
+						</scroll-view>
 						<p>
 							<button size="mini" type="primary" @tap="goToDispose(index)" v-if="item.status == 0">处置</button>
 							<button size="mini" type="primary" @tap="phoneCall()">拨号</button>
 						</p>
-					</uni-grid-item>
-				</uni-grid>
+					</view>
+				</view>
 			</uni-list>
 		</view>
 		<view class="uni-loadmore" v-if="showLoadMore">{{loadMoreText}}</view>
@@ -36,21 +45,28 @@
 		'src': "url('/static/uni.ttf')"
 	});
 	// #endif
-
 	import userApi from '@/pages/user/api.js';
 	import util from '@/utils/utils.js';
-	
 	import {
 		mapState,
-		mapMutations
+		mapMutations,
+		mapGetters
 	} from 'vuex'
 	import homeApi from './home-api.js'
 	import HttpClient from '@/HttpClient.js'
+	import uniList from "@/components/uni-list/uni-list.vue"
+	import uniListItem from "@/components/uni-list-item/uni-list-item.vue"
 	var _this;
+	var _lable;
 	export default {
 		components: {
+			uniListItem,
+			uniList
 		},
-		computed: mapState(['token', 'IPAddress', 'homeData']),
+		computed: {
+			...mapGetters(['lable']),
+			...mapState(['token', 'IPAddress', 'homeData'])
+		}, 
 		onLoad() {
 			_this = this;
 			if (!_this.token || !_this.IPAddress) {
@@ -91,8 +107,9 @@
 				} else {
 					const lableData = data.data;
 					_this.setLable(lableData);
+					_lable = _this.lable;
 					_this.getData(false);
-					_this.getPhoneData();
+					// _this.getPhoneData();
 				}
 			});
 		},
@@ -113,7 +130,8 @@
 				loadMoreText: "加载中...",
 				showLoadMore: false,
 				max: 0,
-				phoneList: []
+				phoneList: [],
+				HttpClient: HttpClient
 			}
 		},
 		onUnload() {
@@ -222,6 +240,13 @@
 				item.title = item.device_name + ' | 预警 | ' + item.checkName;
 				item.time = util.timestampToTime(item.time_norm, null);
 				return item;
+			},
+			getTagsText: (item)=> {
+				console.log(_lable.getValueByLable[item])
+				return _lable.getValueByLable[item];
+			},
+			getColor: (label) => {
+				return _lable.getColorByLable(label);
 			}
 		}
 	}
@@ -229,40 +254,42 @@
 
 <style>
 	.uni-container {
-		padding: 15px;
+		padding: 15upx;
 		background-color: #f8f8f8;
 	}
 
-	/* .home-list-item {
+	.home-list-item {
+		padding: 15upx;
+		box-sizing: border-box;
 		width: 100%;
 		display: flex;
-		border-bottom: solid 1px #cccc;
-	} */
+		border-bottom: solid 1upx #cccc;
+	}
 
-
-	/*
 	.home-list-item>>>.uni-list-item__content {
 		flex-direction: row !important;
 	}
- .home-list-item-left {
-		width: 130px;
-		height: 130px;
-		padding: 10px;
+
+	.home-list-item-left {
+		width: 230upx;
+		height: 230upx;
 		display: flex !important;
 		align-items: center;
 		justify-content: center;
-	} */
+	}
 
-	/* .home-list-item-left>image {
-		width: 130px;
+	.home-list-item-left>image {
+		width: 230upx;
 	}
 
 	.home-list-item-right {
+		display: flex;
+		font-size: 25upx;
 		flex: 1;
 		padding-left: 5px;
-		display: flex;
 		justify-content: space-around;
 		flex-direction: column;
+		overflow: hidden;
 	}
 
 	.home-list-item-right>p {
@@ -270,12 +297,18 @@
 	}
 
 	.home-list-item-right>p>button {
-		margin: 0 2px 0;
+		margin: 0 2upx 0;
 	}
-	 */
+
 	.text-overflow {
 		overflow: hidden;
 		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.view-scroll {
+		width: 100%;
+		flex-direction: row;
 		white-space: nowrap;
 	}
 </style>
