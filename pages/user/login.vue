@@ -13,7 +13,7 @@
 			<input v-model="password" placeholder="请输入登录密码" type="password" class="inputClass" />
 		</view>
 		<view class="inputArea">
-			<input v-model="IP" placeholder="请输入服务器地址" type="text" maxlength="11" class="inputClass" />
+			<input v-model="IP" placeholder="请输入服务器地址" type="text" maxlength="30" class="inputClass" />
 		</view>
 		<view style="padding: 0 10%;text-align: center;">
 			<text style="color: red;">{{message}}</text>
