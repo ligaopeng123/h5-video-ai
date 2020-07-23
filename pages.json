@@ -29,10 +29,10 @@
 			}
 		},
 		{
-			"path": "pages/app/index",
+			"path": "pages/emergency/emergency",
 			"style": {
-				"navigationBarTitleText": "应用",
-				"navigationBarTextStyle": "black"
+				"navigationBarTitleText": "处置建议",
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -284,12 +284,43 @@
 			}
 		}
 	],
+	"subPackages": [{
+		"root": "pages/event",
+		"pages": [{
+				"path": "make-phone-call/make-phone-call",
+				"style": {
+					"navigationBarTitleText": "拨打电话"
+				}
+			},
+			{
+				"path": "event-detail/event-detail",
+				"style": {
+					"navigationBarTitleText": "事件详情"
+				}
+			},
+			{
+				"path": "event-dispose/event-dispose",
+				"style": {
+					"navigationBarTitleText": "处置建议"
+				}
+			}
+		]
+	}, {
+		"root": "pages/emergency",
+		"pages": [{
+			"path": "emergency-dispose",
+			"style": {
+				"navigationBarTitleText": "处置意见"
+			}
+		}]
+
+	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "视觉ai",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8",
-		"autoscan":true,
+		"autoscan": true,
 		"mp-alipay": {
 			"titleBarColor": "#FFFFFF"
 		}
@@ -305,7 +336,7 @@
 				"selectedIconPath": "static/tabbar/warning-selected.png"
 			},
 			{
-				"pagePath": "pages/app/index",
+				"pagePath": "pages/emergency/emergency",
 				"text": "处置",
 				"iconPath": "static/tabbar/dispose.png",
 				"selectedIconPath": "static/tabbar/dispose-selected.png"

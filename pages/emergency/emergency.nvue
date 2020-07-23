@@ -7,18 +7,21 @@
 						<image :src="HttpClient.getImg(item.checkJpg) + '_130x130'" alt="" mode="widthFix" @tap="previewImg(item.checkJpg)">
 					</view>
 					<view class="home-list-item-right">
-						<p class="text-overflow"  @tap="goToDetail(index)">
-							{{item.title}}
+						<p class="text-overflow" @tap="goToDetail(index)">
+							{{item.workName}}
 						</p>
-						<view>
+						<p>
 							{{item.time}}
-						</view>
+						</p>
+						<p>
+							<text>状态：</text>{{item.status == 0 ? '新建' : item.status == 1 ? '处理中' : '已完成' }}
+						</p>
 						<scroll-view class="view-scroll" :scroll-x="true" :show-scrollbar="false">
-							<app-tags v-for="(item, index) in item.alarmClass" :key="index" :text="getTagsText(item)" :color="getColor(item)"></app-tags>
+							<app-tags v-for="(item, index) in item.destIp.split(',')" :key="index" :text="getTagsText(item)" :color="getColor(item)"></app-tags>
 						</scroll-view>
 						<p>
-							<button size="mini" type="primary" @tap="goToDispose(index)" v-if="item.status == 0">处置</button>
-							<button size="mini" type="primary" @tap="phoneCall()">拨号</button>
+							<button size="mini" type="primary" @tap="goToDispose(index)" v-if="item.status != 2">处理</button>
+							<button size="mini" type="primary" @tap="close(item, index)" v-if="item.status != 2">关闭</button>
 						</p>
 					</view>
 				</view>
@@ -27,6 +30,7 @@
 		<view class="uni-loadmore" v-if="showLoadMore">{{loadMoreText}}</view>
 	</view>
 </template>
+
 <script>
 	// TODO 修复Android v3 加载过慢问题
 	// #ifdef APP-PLUS
@@ -36,27 +40,27 @@
 		'src': "url('/static/uni.ttf')"
 	});
 	// #endif
-	import userApi from '@/pages/user/api.js';
-	import util from '@/utils/utils.js';
+
+	import util from '@/utils/utils.js'
 	import {
 		mapState,
 		mapMutations,
 		mapGetters
 	} from 'vuex'
-	import homeApi from './home-api.js'
-	import HttpClient from '@/HttpClient.js'
+	import emergencyApi from './emergency-api.js';
+	import HttpClient from '@/HttpClient.js';
+	import userApi from '@/pages/user/api.js';
 	import uniList from "@/components/uni-list/uni-list.vue"
 	import uniListItem from "@/components/uni-list-item/uni-list-item.vue"
 	var _this;
-	var _lable;
 	export default {
 		components: {
 			uniListItem,
 			uniList
 		},
 		computed: {
-			...mapGetters(['lable']),
-			...mapState(['token', 'IPAddress', 'homeData'])
+				...mapGetters(['lable']),
+				...mapState(['token', 'IPAddress', 'homeData'])
 		},
 		onLoad() {
 			_this = this;
@@ -74,12 +78,11 @@
 							 * 如果需要强制登录，使用reLaunch方式
 							 */
 							uni.reLaunch({
-								url: '/pages/user/login'
+								url: '/pages/login/login'
 							});
 						}
 					}
 				});
-			} else {
 			}
 		},
 		mounted() {
@@ -90,14 +93,12 @@
 				// errorMessage: "此token为黑名单"
 				if (data && data.errorMessage === '此token为黑名单') {
 					uni.reLaunch({
-						url: '/pages/user/login'
+						url: '/pages/login/login'
 					});
 				} else {
 					const lableData = data.data;
 					_this.setLable(lableData);
-					_lable = _this.lable;
 					_this.getData(false);
-					_this.getPhoneData();
 				}
 			});
 		},
@@ -131,7 +132,8 @@
 		onShareAppMessage() {},
 		onNavigationBarButtonTap(e) {},
 		onReachBottom() {
-			if (_this.max > _this.total) {
+			console.log(_this.max)
+			if (_this.max >= _this.total) {
 				_this.loadMoreText = "没有更多数据了!"
 				return;
 			}
@@ -146,24 +148,15 @@
 			_this.getData(false);
 		},
 		methods: {
-			...mapMutations(['setLable', 'setHomeDetailData']),
-			getPhoneData() {
-				homeApi.getPhoneData({
-					regType: 'app',
-					regCfgKey: 'phone'
-				}, (res) => {
-					if (res.data.records) {
-						_this.phoneList = res.data.records[0].cfgValue.split(',');
-					}
-				});
-			},
+			...mapMutations(['setLable', 'setDisposeData']),
 			getData(loading) {
-				homeApi.getHomeData({
+				emergencyApi.emergencyData({
 					pageSize: _this.pageSize,
 					pageNumber: _this.pageNumber,
-					sortName: 'time_norm',
+					sortName: 'createTime',
 					sortOrder: 'desc',
 				}, (res) => {
+					console.log(res)
 					if (res.data.rows) {
 						let data = res.data.rows.map(item => {
 							return _this.dataProcessing(item)
@@ -173,43 +166,43 @@
 							_this.list = _this.list.concat(data);
 						} else {
 							_this.list = data;
+							console.log(_this.list)
 							_this.max += 10;
 							uni.stopPullDownRefresh();
 						}
-						_this.total = res.total;
+						_this.total = res.data.total;
 					}
 				});
 			},
-			phoneCall() {
-				if (!_this.phoneList.length) {
-					uni.showModal({
-						title: "警告",
-						content: "不存在可拨打电话，请前往PC系统添加!",
-						showCancel: false,
-						confirmText: "确定"
-					})
-					return;
+			close(item, index) {
+				if (`${item.status}` === '0') {
+					return false;
 				}
-				if (_this.phoneList.length == 1) {
-					uni.makePhoneCall({
-						phoneNumber: _this.phoneList[0],
-						success: () => {
-						}
-					});
-				} else {
-					_this.goDetailPage('make-phone-call', _this.phoneList);
+				if (`${item.status}` === '2') {
+					return false;
 				}
-			},
-			goToDetail(index) {
-				_this.setHomeDetailData(_this.list[index]);
-				_this.goDetailPage('event-detail');
+				if (`${item.status}` === '1') {
+					emergencyApi.closeWorkorder(
+						'/video/eventworkorder/update/' + `${item.uuid}`, {
+							status: '2',
+							uuid: `${item.status}`,
+						}, res => {
+							uni.showToast({
+								title: '关闭成功',
+								duration: 1500
+							});
+							let item = _this.list[index];
+							item.status = 2;
+							_this.$set(_this.list, index, item);
+						});
+				}
 			},
 			goToDispose(index) {
-				_this.setHomeDetailData(_this.list[index]);
-				_this.goDetailPage('event-dispose');
+				_this.setDisposeData(_this.list[index]);
+				_this.goDetailPage('emergency-dispose');
 			},
 			goDetailPage(e, params) {
-				let url = `/pages/event/${e}/${e}${params ? '?item=' + JSON.stringify(params) : ''}`;
+				let url = `/pages/emergency/${e}`;
 				uni.navigateTo({
 					url: url
 				})
@@ -223,15 +216,14 @@
 				});
 			},
 			dataProcessing(item) {
-				item.title = item.device_name + ' | 预警 | ' + item.checkName;
-				item.time = util.timestampToTime(item.time_norm, null);
+				item.time = util.timestampToTime(item.createTime, null);
 				return item;
 			},
 			getTagsText: (item)=> {
-				return _lable.getValueByLable[item];
+				return _this.lable.getValueByLable[item];
 			},
 			getColor: (label) => {
-				return _lable.getColorByLable(label);
+				return _this.lable.getColorByLable(label);
 			}
 		}
 	}
@@ -241,18 +233,15 @@
 	.uni-container {
 		padding: 15upx;
 		background-color: #f8f8f8;
+		font-size: 20upx;
 	}
 
 	.home-list-item {
-		padding: 15upx;
-		box-sizing: border-box;
 		width: 100%;
 		display: flex;
+		padding: 15upx;
+		box-sizing: border-box;
 		border-bottom: solid 1upx #cccc;
-	}
-
-	.home-list-item>>>.uni-list-item__content {
-		flex-direction: row !important;
 	}
 
 	.home-list-item-left {
