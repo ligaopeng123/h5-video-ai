@@ -45,7 +45,8 @@ const getAuthorization = () => {
 const get = function({
 	url,
 	params,
-	success
+	success,
+	fail
 }) {
 	uni.request({
 		method: 'GET',
@@ -58,6 +59,12 @@ const get = function({
 		data: params || {},
 		success: (res) => {
 			success(res);
+		},
+		fail: () => {
+			uni.showToast({
+				icon: 'none',
+				title: '网络连接失败,请检查服务器地址'
+			});
 		}
 	});
 }
@@ -68,7 +75,8 @@ const post = function({
 	url,
 	params,
 	success,
-	Authorization
+	Authorization,
+	fail,
 }) {
 	uni.request({
 		method: 'POST',
@@ -81,6 +89,13 @@ const post = function({
 		data: params,
 		success: (res) => {
 			success(res);
+		},
+		fail: ()=> {
+			uni.showToast({
+				icon: 'none',
+				title: '网络连接失败,请检查服务器地址'
+			});
+			fail ? fail() : '';
 		}
 	});
 }

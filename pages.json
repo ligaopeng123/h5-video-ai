@@ -1,134 +1,324 @@
 {
-	"pages": [
-		// pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{
-			"path": "pages/tabBar/event/event",
+	"pages": [{
+			"path": "pages/event/event",
 			"style": {
 				"navigationBarTitleText": "预警事件",
-				"enablePullDownRefresh": true,
-				"app-plus": {
-					"bounce": "vertical",
-					"titleNView": {
-
-					}
-				}
+				"navigationBarTextStyle": "black"
 			}
 		},
 		{
-			"path": "pages/tabBar/emergency/emergency",
-			"style": {
-				"navigationBarTitleText": "处置建议",
-				"app-plus": {
-					"titleNView": {
-
-					}
-				}
-			}
-		},
-		{
-			"path": "pages/tabBar/statistics/label",
-			"style": {
-				"navigationBarTitleText": "统计信息",
-				"app-plus": {
-					"titleNView": {
-
-					}
-				}
-			}
-		},
-		{
-			"path": "pages/tabBar/logout/logout",
-			"style": {
-				"navigationBarTitleText": "我的",
-				"app-plus": {
-					"titleNView": {
-
-					}
-				}
-			}
-		},
-		{
-			"path": "pages/login/login",
+			"path": "pages/user/login",
 			"style": {
 				"navigationStyle": "custom",
 				"titleNView": false
 			}
+		},
+		{
+			"path": "pages/basic/index",
+			"style": {
+				"navigationBarTitleText": "uCharts跨全端图表",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/statistics/index",
+			"style": {
+				"navigationBarTitleText": "统计分析",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/app/index",
+			"style": {
+				"navigationBarTitleText": "应用",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/doc/index",
+			"style": {
+				"navigationBarTitleText": "手册",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/user/index",
+			"style": {
+				"navigationBarTitleText": "用户管理",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/column/column",
+			"style": {
+				"navigationBarTitleText": "基本柱状图",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/column/meter",
+			"style": {
+				"navigationBarTitleText": "温度计式图表",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/column/stack",
+			"style": {
+				"navigationBarTitleText": "堆叠图",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/mix/mix",
+			"style": {
+				"navigationBarTitleText": "混合图",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/line/rotate",
+			"style": {
+				"navigationBarTitleText": "横屏模式带滚动条",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/column/rotate",
+			"style": {
+				"navigationBarTitleText": "横屏图表",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/column/mark-line",
+			"style": {
+				"navigationBarTitleText": "标记线",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/candle/candle",
+			"style": {
+				"navigationBarTitleText": "基本K线图",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/line/line",
+			"style": {
+				"navigationBarTitleText": "基本折线图",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/line/line-scroll",
+			"style": {
+				"navigationBarTitleText": "折线图带滚动条",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/line/curve",
+			"style": {
+				"navigationBarTitleText": "基本曲线图",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/area/time",
+			"style": {
+				"navigationBarTitleText": "时间X轴",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/area/area",
+			"style": {
+				"navigationBarTitleText": "基本区域图",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/pie/pie",
+			"style": {
+				"navigationBarTitleText": "基本饼图",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/pie/rose",
+			"style": {
+				"navigationBarTitleText": "玫瑰图",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/pie/ring",
+			"style": {
+				"navigationBarTitleText": "基本环形图",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/gauge/gauge",
+			"style": {
+				"navigationBarTitleText": "仪表盘",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/radar/radar",
+			"style": {
+				"navigationBarTitleText": "雷达图",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/word/word",
+			"style": {
+				"navigationBarTitleText": "词云图",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/funnel/funnel",
+			"style": {
+				"navigationBarTitleText": "漏斗图",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/map/map",
+			"style": {
+				"navigationBarTitleText": "地图",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/arcbar/arcbar",
+			"style": {
+				"navigationBarTitleText": "基本圆弧进度条",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/arcbar/mix",
+			"style": {
+				"navigationBarTitleText": "多重圆弧进度条",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/basic/column/column-scroll",
+			"style": {
+				"navigationBarTitleText": "柱状图带滚动条",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/doc/view",
+			"style": {
+				"navigationBarTitleText": "文档详情",
+				"navigationBarTextStyle": "black"
+			}
+		}, {
+			"path": "pages/app/demo/component",
+			"style": {
+				"navigationBarTitleText": "(v-for)组件内使用示例",
+				"navigationBarTextStyle": "black"
+			}
+		}, {
+			"path": "pages/app/demo/index",
+			"style": {
+				"navigationBarTitleText": "单页多图表好性能",
+				"navigationBarTextStyle": "black"
+			}
+		}, {
+			"path": "pages/app/demo/candle",
+			"style": {
+				"navigationBarTitleText": "K线图与柱状图联动",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/app/demo/scroll",
+			"style": {
+				"navigationBarTitleText": "scroll-view中使用",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/user/about",
+			"style": {
+				"navigationBarTitleText": "关于uCharts",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/user/feedback",
+			"style": {
+				"navigationBarTitleText": "问题反馈",
+				"navigationBarTextStyle": "black"
+			}
+		}, {
+			"path": "pages/user/service",
+			"style": {
+				"navigationBarTitleText": "服务条款及协议",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/user/account",
+			"style": {
+				"navigationBarTitleText": "帐号管理",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/user/message",
+			"style": {
+				"navigationBarTitleText": "新消息通知",
+				"navigationBarTextStyle": "black"
+			}
 		}
 	],
 	"globalStyle": {
-		"pageOrientation": "portrait",
-		"navigationBarTextStyle": "white",
-		"navigationBarTitleText": "Hello uniapp",
-		"navigationBarBackgroundColor": "#007AFF",
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "视觉ai",
+		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8",
-		"backgroundColorTop": "#F4F5F6",
-		"backgroundColorBottom": "#F4F5F6",
-		"mp-360": {
-			"navigationStyle": "custom"
+		"mp-alipay": {
+			"titleBarColor": "#FFFFFF"
 		}
 	},
 	"tabBar": {
-		"color": "#7A7E83",
-		"selectedColor": "#007AFF",
-		"borderStyle": "black",
+		"color": "#333333",
 		"backgroundColor": "#F8F8F8",
+		"selectedColor": "#00B26A",
 		"list": [{
-				"pagePath": "pages/tabBar/event/event",
-				"iconPath": "static/warning.png",
-				"selectedIconPath": "static/warning-selected.png",
-				// 内置组件
-				"text": "预警"
+				"pagePath": "pages/event/event",
+				"text": "预警",
+				"iconPath": "static/tabbar/warning.png",
+				"selectedIconPath": "static/tabbar/warning-selected.png"
 			},
 			{
-				"pagePath": "pages/tabBar/emergency/emergency",
-				"iconPath": "static/dispose.png",
-				"selectedIconPath": "static/dispose-selected.png",
-				// 接口
-				"text": "处置"
-			}, {
-				"pagePath": "pages/tabBar/statistics/label",
-				"iconPath": "static/statistics.png",
-				"selectedIconPath": "static/statistics-selected.png",
-				// 扩展组件
-				"text": "统计"
-			}, {
-				"pagePath": "pages/tabBar/logout/logout",
-				"iconPath": "static/mine.png",
-				"selectedIconPath": "static/mine-selected.png",
-				// 模版
-				"text": "我的"
-			}
-		]
-	},
-	"subPackages": [{
-		"root": "pages/event",
-		"pages": [{
-			"path": "make-phone-call/make-phone-call",
-			"style": {
-				"navigationBarTitleText": "拨打电话"
-			}
-		},
-			{
-				"path": "event-detail/event-detail",
-				"style": {
-					"navigationBarTitleText": "事件详情"
-				}
+				"pagePath": "pages/app/index",
+				"text": "处置",
+				"iconPath": "static/tabbar/dispose.png",
+				"selectedIconPath": "static/tabbar/dispose-selected.png"
 			},
 			{
-				"path": "event-dispose/event-dispose",
-				"style": {
-					"navigationBarTitleText": "事件处理"
-				}
-			}
-		]
-	}],
-	"condition" : { //模式配置，仅开发期间生效
-		"current": 0, //当前激活的模式(list 的索引项)
-		"list": [
+				"pagePath": "pages/statistics/index",
+				"text": "统计",
+				"iconPath": "static/tabbar/statistics.png",
+				"selectedIconPath": "static/tabbar/statistics-selected.png"
+			},
 			{
-				"name": "", //模式名称
-				"path": "", //启动页面，必选
-				"query": "" //启动参数，在页面的onLoad函数里面得到
+				"pagePath": "pages/user/index",
+				"text": "我的",
+				"iconPath": "static/tabbar/mine.png",
+				"selectedIconPath": "static/tabbar/mine-selected.png"
 			}
 		]
 	}
