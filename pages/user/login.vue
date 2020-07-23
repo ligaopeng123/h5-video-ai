@@ -138,7 +138,7 @@
 		width: 100%;
 	}
 	.logo {
-		padding: 100upx !important;
+		padding-top: 200upx !important;
 	}
 	.logo-name {
 		color: #C8C7CC;

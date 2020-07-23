@@ -1,5 +1,5 @@
 {
-    "name" : "uCharts",
+    "name" : "app-video-ai",
     "appid" : "__UNI__C73A091",
     "description" : "适用于uni-app的高性能跨全端图表，支持H5、APP、各大平台小程序",
     "versionName" : "1.9.4",
@@ -83,8 +83,8 @@
             },
             "splashscreen" : {
                 "android" : {
-                    "hdpi" : "static/startUp/480 _762.png",
-                    "xhdpi" : "static/startUp/720 _1242.png",
+                    "hdpi" : "static/startUp/1080 _1882.png",
+                    "xhdpi" : "static/startUp/1080 _1882.png",
                     "xxhdpi" : "static/startUp/1080 _1882.png"
                 }
             }

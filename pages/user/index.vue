@@ -31,7 +31,7 @@
 			 * 退出登录
 			 */
 			bindLogout() {
-				// this.logout();
+				this.logout();
 				uni.reLaunch({
 					url: '/pages/user/login'
 				});
