@@ -91,12 +91,11 @@
 				
 				userApi.checkUser(data, ({statusCode, data, errMsg, errorMessage})=> {
 					uni.hideLoading();
-					if(statusCode === 200) {
+					if(statusCode === 200 && data && data.access_token) {
 						this.setToken({
 							token: 'Bearer '+ data.access_token, 
 							username: this.name
 						});
-						_self.message = '';
 					} else {
 						_self.message = errorMessage || data.errorMessage
 					}
