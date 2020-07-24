@@ -80,6 +80,9 @@
 					}
 				});
 			} else {
+				uni.$on('websocket', res => {
+					_this.list = [_this.dataProcessing(res.data)].concat(_this.list)
+				});
 			}
 		},
 		mounted() {
@@ -193,8 +196,7 @@
 				if (_this.phoneList.length == 1) {
 					uni.makePhoneCall({
 						phoneNumber: _this.phoneList[0],
-						success: () => {
-						}
+						success: () => {}
 					});
 				} else {
 					_this.goDetailPage('make-phone-call', _this.phoneList);
@@ -227,7 +229,7 @@
 				item.time = util.timestampToTime(item.time_norm, null);
 				return item;
 			},
-			getTagsText: (item)=> {
+			getTagsText: (item) => {
 				return _lable.getValueByLable[item];
 			},
 			getColor: (label) => {
