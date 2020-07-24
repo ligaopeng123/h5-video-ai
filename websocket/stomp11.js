@@ -131,7 +131,7 @@
 
     Client.prototype.debug = function(message) {
       var _ref;
-      return typeof window !== "undefined" && window !== null ? (_ref = window.console) != null ? _ref.log(message) : void 0 : void 0;
+      return typeof window !== "undefined" && window !== null ? (_ref = window.console) != null ? '' : void 0 : void 0;
     };
 
     now = function() {
@@ -483,6 +483,13 @@
     window.Stomp = Stomp;
   } else if (!exports) {
     self.Stomp = Stomp;
+  } else { // 兼容uniapp
+	Stomp.setInterval = function(interval, f) {
+	  return setInterval(f, interval);
+	};
+	Stomp.clearInterval = function(id) {
+	  return clearInterval(id);
+	};
   }
 
 }).call(this);

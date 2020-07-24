@@ -14,7 +14,7 @@
 							{{item.time}}
 						</p>
 						<p>
-							<text>状态：</text>{{item.status == 0 ? '新建' : item.status == 1 ? '处理中' : '已完成' }}
+							<text>状态：</text> <text :style="{'color': getTextColor(item)}">{{item.status == 0 ? '新建' : item.status == 1 ? '处理中' : '已完成' }}</text>
 						</p>
 						<scroll-view class="view-scroll" :scroll-x="true" :show-scrollbar="false">
 							<app-tags v-for="(item, index) in item.destIp.split(',')" :key="index" :text="getTagsText(item)" :color="getColor(item)"></app-tags>
@@ -59,8 +59,8 @@
 			uniList
 		},
 		computed: {
-				...mapGetters(['lable']),
-				...mapState(['token', 'IPAddress', 'homeData'])
+			...mapGetters(['lable']),
+			...mapState(['token', 'IPAddress', 'homeData'])
 		},
 		onLoad() {
 			_this = this;
@@ -132,7 +132,6 @@
 		onShareAppMessage() {},
 		onNavigationBarButtonTap(e) {},
 		onReachBottom() {
-			console.log(_this.max)
 			if (_this.max >= _this.total) {
 				_this.loadMoreText = "没有更多数据了!"
 				return;
@@ -156,7 +155,6 @@
 					sortName: 'createTime',
 					sortOrder: 'desc',
 				}, (res) => {
-					console.log(res)
 					if (res.data.rows) {
 						let data = res.data.rows.map(item => {
 							return _this.dataProcessing(item)
@@ -166,7 +164,6 @@
 							_this.list = _this.list.concat(data);
 						} else {
 							_this.list = data;
-							console.log(_this.list)
 							_this.max += 10;
 							uni.stopPullDownRefresh();
 						}
@@ -219,11 +216,14 @@
 				item.time = util.timestampToTime(item.createTime, null);
 				return item;
 			},
-			getTagsText: (item)=> {
+			getTagsText: (item) => {
 				return _this.lable.getValueByLable[item];
 			},
 			getColor: (label) => {
 				return _this.lable.getColorByLable(label);
+			},
+			getTextColor: (item) => {
+				return	item.status == 0 ? '#cf3a31' : item.status == 1 ? '#1c90ff' : '#2a8e2b';
 			}
 		}
 	}
@@ -233,7 +233,7 @@
 	.uni-container {
 		padding: 15upx;
 		background-color: #f8f8f8;
-		font-size: 20upx;
+		font-size: 18upx;
 	}
 
 	.home-list-item {
@@ -246,7 +246,7 @@
 
 	.home-list-item-left {
 		width: 230upx;
-		height: 230upx;
+		height: 220upx;
 		display: flex !important;
 		align-items: center;
 		justify-content: center;
@@ -254,11 +254,12 @@
 
 	.home-list-item-left>image {
 		width: 230upx;
+		max-height: 200upx;
 	}
 
 	.home-list-item-right {
 		display: flex;
-		font-size: 25upx;
+		font-size: 18upx;
 		flex: 1;
 		padding-left: 5px;
 		justify-content: space-around;

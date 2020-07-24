@@ -259,7 +259,7 @@
 
 	.home-list-item-left {
 		width: 230upx;
-		height: 230upx;
+		height: 180upx;
 		display: flex !important;
 		align-items: center;
 		justify-content: center;
@@ -267,11 +267,12 @@
 
 	.home-list-item-left>image {
 		width: 230upx;
+		max-height: 180upx;
 	}
 
 	.home-list-item-right {
 		display: flex;
-		font-size: 25upx;
+		font-size: 18upx;
 		flex: 1;
 		padding-left: 5px;
 		justify-content: space-around;
