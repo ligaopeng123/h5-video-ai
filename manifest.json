@@ -2,7 +2,7 @@
     "name" : "app-video-ai",
     "appid" : "__UNI__C73A091",
     "description" : "适用于uni-app的高性能跨全端图表，支持H5、APP、各大平台小程序",
-    "versionName" : "1.9.4",
+    "versionName" : "2.0.1",
     "versionCode" : "100",
     "transformPx" : false,
     "app-plus" : {
@@ -89,7 +89,48 @@
                 }
             }
         },
-        "usingComponents" : false
+        "usingComponents" : false,
+        "nativePlugins" : {
+            "JY-JPush" : {
+                "android_channel" : "android",
+                "android_appkey" : "b7fbe31e51017a62ee3be9a3",
+                "ios_appkey" : "b7fbe31e51017a62ee3be9a3",
+                "ios_channel" : "ios",
+                "__plugin_info__" : {
+                    "name" : "【限时5折】JYJPush极光推送插件 - 极光官方推荐 - [试用版，仅用于自定义调试基座]",
+                    "description" : "极光推送Uni版本",
+                    "platforms" : "Android,iOS",
+                    "url" : "https://ext.dcloud.net.cn/plugin?id=741",
+                    "android_package_name" : "",
+                    "ios_bundle_id" : "",
+                    "isCloud" : true,
+                    "bought" : 0,
+                    "pid" : "741",
+                    "parameters" : {
+                        "android_channel" : {
+                            "des" : "极光推送的渠道名称",
+                            "key" : "JPUSH_CHANNEL",
+                            "value" : ""
+                        },
+                        "android_appkey" : {
+                            "des" : "极光推送的APPKEY",
+                            "key" : "JPUSH_APPKEY",
+                            "value" : ""
+                        },
+                        "ios_appkey" : {
+                            "des" : "极光推送的APPKEY",
+                            "key" : "JPUSH_APPKEY",
+                            "value" : ""
+                        },
+                        "ios_channel" : {
+                            "des" : "极光推送的渠道名称",
+                            "key" : "JPUSH_CHANNEL",
+                            "value" : ""
+                        }
+                    }
+                }
+            }
+        }
     },
     /* SDK配置 */
     "quickapp" : {},
