@@ -117,14 +117,19 @@
 			}
 		},
 		onReady() {
-			userApi.getLogo(({data})=> {
-				const OEM = data._value.OEM;
-				this.businesLogoName = OEM.getBusinesLogoName;
-				const logoImg = OEM.getBusinesLoginLogoImgApp;
-				if(logoImg && !logoImg.includes('assets/img')) {
-					_self.logoImg = logoImg;
-				}
-			})
+			// 拿到当前的网络状态 如果合法connection 为true 此时下发OEM数据 更新状态
+			// 否则使用默认的logo
+			const connection = uni.getStorageSync('connection');
+			if(connection === true) {
+				userApi.getLogo(({data})=> {
+					const OEM = data._value.OEM;
+					this.businesLogoName = OEM.getBusinesLogoName;
+					const logoImg = OEM.getBusinesLoginLogoImgApp;
+					if(logoImg && !logoImg.includes('assets/img')) {
+						_self.logoImg = logoImg;
+					}
+				})
+			}
 			this.IP = this.IPAddress;
 			this.name = this.username;
 		}

@@ -29,7 +29,7 @@
 			}
 		},
 		{
-			"path": "pages/emergency/emergency",
+			"path": "pages/emergency/index",
 			"style": {
 				"navigationBarTitleText": "处置建议",
 				"enablePullDownRefresh": true
@@ -336,7 +336,7 @@
 				"selectedIconPath": "static/tabbar/warning-selected.png"
 			},
 			{
-				"pagePath": "pages/emergency/emergency",
+				"pagePath": "pages/emergency/index",
 				"text": "处置",
 				"iconPath": "static/tabbar/dispose.png",
 				"selectedIconPath": "static/tabbar/dispose-selected.png"

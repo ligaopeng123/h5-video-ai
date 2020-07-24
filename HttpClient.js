@@ -50,6 +50,7 @@ const get = function({
 }) {
 	uni.request({
 		method: 'GET',
+		timeout: 10000,
 		// dataType: 'json',
 		url: getIPAddress(url),
 		header: {
@@ -58,16 +59,26 @@ const get = function({
 		},
 		data: params || {},
 		success: (res) => {
+			uni.setStorageSync('connection', true);
 			success(res);
 		},
 		fail: () => {
-			uni.showToast({
-				icon: 'none',
-				title: '网络连接失败,请检查服务器地址'
+			uni.setStorageSync('connection', false);
+			uni.reLaunch({
+				url: '/pages/user/login'
 			});
+			fail && fail()
+			setTimeout(()=> {
+				uni.showToast({
+					icon: 'none',
+					title: '网络连接失败,请检查服务器地址',
+					duration: 2000
+				});
+			})
 		}
 	});
 }
+
 /**
  * post 方法
  */
@@ -81,6 +92,7 @@ const post = function({
 	uni.request({
 		method: 'POST',
 		// dataType: 'json',
+		timeout: 15000,
 		url: getIPAddress(url),
 		header: {
 			// 'content-type': 'application/json', //自定义请求头信息
