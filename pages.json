@@ -3,7 +3,6 @@
 			"path": "pages/event/event",
 			"style": {
 				"navigationBarTitleText": "预警事件",
-				"enablePullDownRefresh": true,
 				"navigationBarTextStyle": "black"
 			}
 		},
@@ -31,8 +30,7 @@
 		{
 			"path": "pages/emergency/index",
 			"style": {
-				"navigationBarTitleText": "处置建议",
-				"enablePullDownRefresh": true
+				"navigationBarTitleText": "处置建议"
 			}
 		},
 		{

@@ -87,6 +87,13 @@ export class DateUtil {
     const second = date.getSeconds();
     return this.setTimeFillZero(second);
   }
+  
+  // 返回分
+     static getFullYear(date) {
+      const minute = date.getFullYear();
+      return this.setTimeFillZero(minute);
+    }
+	
    static setTimeFillZero(num) {
     return num < 10 ? '0' + num : num;
   }

@@ -1,7 +1,8 @@
 <template>
 	<view class="uni-container">
-		<view>
-			<uni-list>
+		
+		<s-pull-scroll ref="pullScroll" :back-top="true" :pullDown="pullDown" :pullUp="loadData">
+			 <uni-list>
 				<view class="home-list-item" :show-arrow="false" v-for="(item, index) in list" :key="item.id">
 					<view class="home-list-item-left">
 						<image :src="HttpClient.getImg(item.checkJpg) + '_130x130'" alt="" mode="widthFix" @tap="previewImg(item.checkJpg)">
@@ -22,9 +23,12 @@
 						</p>
 					</view>
 				</view>
-			</uni-list>
+			 </uni-list>
+		</s-pull-scroll>
+		<!-- <view>
+			
 		</view>
-		<view class="uni-loadmore" v-if="showLoadMore">{{loadMoreText}}</view>
+		<view class="uni-loadmore" v-if="showLoadMore">{{loadMoreText}}</view> -->
 	</view>
 </template>
 <script>
@@ -38,6 +42,7 @@
 	// #endif
 	import userApi from '@/pages/user/api.js';
 	import util from '@/utils/utils.js';
+	import sPullScroll from '@/components/s-pull-scroll/index.vue';
 	import {
 		mapState,
 		mapMutations,
@@ -52,7 +57,8 @@
 	export default {
 		components: {
 			uniListItem,
-			uniList
+			uniList,
+			sPullScroll
 		},
 		computed: {
 			...mapGetters(['lable']),
@@ -106,21 +112,14 @@
 		},
 		data() {
 			return {
-				total: 0,
-				list: [
-					/* {
-					title: "前台_04",
-					checkName: "lei-chun-qiao",
-					checkJpg: "group1/M00/04/82/wKgBT18VLd2APHQWAAARCEZOLIU967.jpg",
-					time: "1595223511000"
-				}, */
-				],
+				list: [],
 				pageSize: 10,
 				pageNumber: 1,
 				navigateFlag: false,
 				loadMoreText: "加载中...",
 				showLoadMore: false,
 				max: 0,
+				total: 0,
 				phoneList: [],
 				HttpClient: HttpClient
 			}
@@ -133,23 +132,22 @@
 		},
 		onShareAppMessage() {},
 		onNavigationBarButtonTap(e) {},
-		onReachBottom() {
-			if (_this.max > _this.total) {
-				_this.loadMoreText = "没有更多数据了!"
-				return;
-			}
-			_this.pageNumber++;
-			_this.showLoadMore = true;
-			_this.getData(true);
-		},
-		onPullDownRefresh() {
-			_this.max = 0;
-			_this.list = [];
-			_this.pageNumber = 1;
-			_this.getData(false);
-		},
 		methods: {
 			...mapMutations(['setLable', 'setHomeDetailData']),
+			pullDown (pullScroll) {
+				_this.max = 0;
+				_this.list = [];
+				_this.pageNumber = 1;
+				_this.getData(false);
+			},
+			loadData (pullScroll) {
+				if (_this.max >= _this.total) {
+					_this.$refs.pullScroll.finish(_this.max >= _this.total);
+					return;
+				}
+				_this.pageNumber++;
+				_this.getData(true);
+			 },
 			getPhoneData() {
 				homeApi.getPhoneData({
 					regType: 'app',
@@ -177,9 +175,9 @@
 						} else {
 							_this.list = data;
 							_this.max += 10;
-							uni.stopPullDownRefresh();
 						}
-						_this.total = res.total;
+						_this.total = res.data.total;
+						_this.$refs.pullScroll.success();
 					}
 				});
 			},
@@ -268,6 +266,7 @@
 	.home-list-item-left>image {
 		width: 230upx;
 		max-height: 180upx;
+		min-height: 180upx;
 	}
 
 	.home-list-item-right {
@@ -285,7 +284,8 @@
 	}
 
 	.home-list-item-right>p>button {
-		margin: 0 2upx 0;
+		line-height: 38upx;
+		margin: 0 10upx 0;
 	}
 
 	.text-overflow {
@@ -298,5 +298,9 @@
 		width: 100%;
 		flex-direction: row;
 		white-space: nowrap;
+	}
+	
+	.uni-loadmore{
+		text-align: center;
 	}
 </style>

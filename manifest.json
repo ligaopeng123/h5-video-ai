@@ -2,7 +2,7 @@
     "name" : "app-video-ai",
     "appid" : "__UNI__C73A091",
     "description" : "适用于uni-app的高性能跨全端图表，支持H5、APP、各大平台小程序",
-    "versionName" : "2.0.1",
+    "versionName" : "1.9.4",
     "versionCode" : "100",
     "transformPx" : false,
     "app-plus" : {
@@ -45,7 +45,8 @@
             },
             /* ios打包配置 */
             "sdkConfigs" : {
-                "ad" : {}
+                "ad" : {},
+                "push" : {}
             },
             "icons" : {
                 "ios" : {

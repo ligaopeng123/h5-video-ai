@@ -1,5 +1,5 @@
 <template name="app-tags">
-	<text :style="{'background': color}" class="text">
+	<text :style="{'background-color': color }" class="text">
 		{{text}}
 	</text>
 </template>
@@ -54,12 +54,13 @@
 
 <style>
 	.text{
-		padding: 8upx;
 		display: inline-block;
 		text-align: center;
-		height: 30upx;
 		border-radius: 8upx;
-		color: #FFFFFF;
 		margin: 5upx;
+		font-size: 12upx;
+		line-height: 22upx;
+		padding: 10upx;
+		box-sizing: border-box;
 	}
 </style>

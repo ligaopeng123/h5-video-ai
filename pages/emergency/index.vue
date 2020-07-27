@@ -1,6 +1,6 @@
 <template>
 	<view class="uni-container">
-		<view>
+		<s-pull-scroll ref="pullScroll" :back-top="true" :pullDown="pullDown" :pullUp="loadData">
 			<uni-list>
 				<view class="home-list-item" :show-arrow="false" v-for="(item, index) in list" :key="item.id">
 					<view class="home-list-item-left">
@@ -26,8 +26,7 @@
 					</view>
 				</view>
 			</uni-list>
-		</view>
-		<view class="uni-loadmore" v-if="showLoadMore">{{loadMoreText}}</view>
+		</s-pull-scroll>
 	</view>
 </template>
 
@@ -41,22 +40,24 @@
 	});
 	// #endif
 
-	import util from '@/utils/utils.js'
+	import util from '@/utils/utils.js';
 	import {
 		mapState,
 		mapMutations,
 		mapGetters
-	} from 'vuex'
+	} from 'vuex';
 	import emergencyApi from './emergency-api.js';
 	import HttpClient from '@/HttpClient.js';
 	import userApi from '@/pages/user/api.js';
-	import uniList from "@/components/uni-list/uni-list.vue"
-	import uniListItem from "@/components/uni-list-item/uni-list-item.vue"
+	import uniList from "@/components/uni-list/uni-list.vue";
+	import uniListItem from "@/components/uni-list-item/uni-list-item.vue";
+	import sPullScroll from '@/components/s-pull-scroll/index.vue';
 	var _this;
 	export default {
 		components: {
 			uniListItem,
-			uniList
+			uniList,
+			sPullScroll
 		},
 		computed: {
 			...mapGetters(['lable']),
@@ -131,23 +132,22 @@
 		},
 		onShareAppMessage() {},
 		onNavigationBarButtonTap(e) {},
-		onReachBottom() {
-			if (_this.max >= _this.total) {
-				_this.loadMoreText = "没有更多数据了!"
-				return;
-			}
-			_this.pageNumber++;
-			_this.showLoadMore = true;
-			_this.getData(true);
-		},
-		onPullDownRefresh() {
-			_this.max = 0;
-			_this.list = [];
-			_this.pageNumber = 1;
-			_this.getData(false);
-		},
 		methods: {
 			...mapMutations(['setLable', 'setDisposeData']),
+			pullDown(pullScroll) {
+				_this.max = 0;
+				_this.list = [];
+				_this.pageNumber = 1;
+				_this.getData(false);
+			},
+			loadData(pullScroll) {
+				if (_this.max >= _this.total) {
+					_this.$refs.pullScroll.finish(_this.max >= _this.total);
+					return;
+				}
+				_this.pageNumber++;
+				_this.getData(true);
+			},
 			getData(loading) {
 				emergencyApi.emergencyData({
 					pageSize: _this.pageSize,
@@ -165,9 +165,9 @@
 						} else {
 							_this.list = data;
 							_this.max += 10;
-							uni.stopPullDownRefresh();
 						}
 						_this.total = res.data.total;
+						_this.$refs.pullScroll.success();
 					}
 				});
 			},
@@ -223,7 +223,7 @@
 				return _this.lable.getColorByLable(label);
 			},
 			getTextColor: (item) => {
-				return	item.status == 0 ? '#cf3a31' : item.status == 1 ? '#1c90ff' : '#2a8e2b';
+				return item.status == 0 ? '#cf3a31' : item.status == 1 ? '#1c90ff' : '#2a8e2b';
 			}
 		}
 	}
@@ -254,6 +254,7 @@
 
 	.home-list-item-left>image {
 		width: 230upx;
+		min-height: 200upx;
 		max-height: 200upx;
 	}
 
@@ -272,7 +273,8 @@
 	}
 
 	.home-list-item-right>p>button {
-		margin: 0 2upx 0;
+		line-height: 38upx;
+		margin: 0 10upx 0;
 	}
 
 	.text-overflow {
@@ -285,5 +287,9 @@
 		width: 100%;
 		flex-direction: row;
 		white-space: nowrap;
+	}
+
+	.uni-loadmore {
+		text-align: center;
 	}
 </style>
