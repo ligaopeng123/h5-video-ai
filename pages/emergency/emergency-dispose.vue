@@ -6,7 +6,7 @@
 		<view class="content-body">
 			<h4>工单信息</h4>
 			<p><text>工单编号：</text>{{disposeData.workCode}}</p>
-			<p><text>工单状态：</text>{{disposeData.status == 0 ? '新建' : disposeData.status == 1 ? '处理中' : '已完成'}}</p>
+			<p><text>工单状态：</text> <text :style="{'color': getTextColor(disposeData)}">{{disposeData.status == 0 ? '新建' : disposeData.status == 1 ? '处理中' : '已完成'}}</text></p>
 			<p><text>创建时间：</text>{{disposeData.time}}</p>
 			<p><text>处置建议：</text>{{disposeData.description}}</p>
 		</view>
@@ -137,6 +137,9 @@
 						_this.disposalList = res.data.data;
 					}
 				});
+			},
+			getTextColor: (item) => {
+				return item.status == 0 ? '#cf3a31' : item.status == 1 ? '#1c90ff' : '#2a8e2b';
 			}
 		},
 	}

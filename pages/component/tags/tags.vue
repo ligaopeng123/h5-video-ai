@@ -1,5 +1,5 @@
 <template name="app-tags">
-	<text :style="{'background-color': color }" class="text">
+	<text :style="{'background-color': getBackground(color), 'color': color }" class="text">
 		{{text}}
 	</text>
 </template>
@@ -47,7 +47,10 @@
 		onShareAppMessage() {},
 		onNavigationBarButtonTap(e) {},
 		methods: {
-		
+			getBackground(color) {
+				var RGBA = "rgba(" + parseInt("0x" + color.slice(1, 3)) + "," + parseInt("0x" + color.slice(3, 5)) + "," + parseInt( "0x" + color.slice(5, 7)) + "," + 0.4 + ")";
+				return RGBA
+			}
 		},
 	}
 </script>

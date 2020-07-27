@@ -27,6 +27,7 @@
 				</view>
 			</uni-list>
 		</s-pull-scroll>
+		<mpopup ref="mpopup" :isdistance="true"></mpopup>
 	</view>
 </template>
 
@@ -52,12 +53,14 @@
 	import uniList from "@/components/uni-list/uni-list.vue";
 	import uniListItem from "@/components/uni-list-item/uni-list-item.vue";
 	import sPullScroll from '@/components/s-pull-scroll/index.vue';
+	import mpopup from '../../components/xuan-popup/xuan-popup.vue';
 	var _this;
 	export default {
 		components: {
 			uniListItem,
 			uniList,
-			sPullScroll
+			sPullScroll,
+			mpopup
 		},
 		computed: {
 			...mapGetters(['lable']),
@@ -184,9 +187,10 @@
 							status: '2',
 							uuid: `${item.status}`,
 						}, res => {
-							uni.showToast({
-								title: '关闭成功',
-								duration: 1500
+							_this.$refs.mpopup.open({
+								type: 'success',
+								content: '关闭成功！',
+								timeout: 2000,
 							});
 							let item = _this.list[index];
 							item.status = 2;
