@@ -1,11 +1,8 @@
 <script>
 	import ws from '@/websocket/ws.js'
-	import {
-		SockJS
-	} from '@/websocket/sockjs.min.js'
 	import HttpClient from '@/HttpClient.js'
 	import dateUtil from '@/utils/date.util.js';
-	import mqtt from '@/utils/mqtt.min.js'
+	import mqtt from '@/utils/mqtt.js'
 	import {
 		mapGetters,
 		mapState
@@ -64,11 +61,22 @@
 			uni.onSocketMessage(function(res) {
 				console.log('收到服务器内容：' + res);
 			}) */
-			_this.connect();
+				uni.$on('business', res => {
+					console.log(res)
+					let str = res.data;
+					if (str === 'login') {
+						_this.connect();
+					} 
+					
+					if (str === 'logout') {
+						_this.unconnect();
+					}
+				});
 			// _this.subscribe();
 		},
 		methods: {
 			connect: function() {
+				console.log(2222)
 				var hosts = '',
 					// #ifdef H5
 					hosts = 'ws://' + _this.serve.host + ':' + _this.serve.port + _this.serve.path
@@ -89,28 +97,21 @@
 						_this.options
 					);
 			
-					_this.client.on('connect', () => {
-						uni.hideLoading();
-						_this.subscribe();
-						_this.showToast('连接成功', 1000, 'success')
+					let status = true;
+					_this.client.on('connect', (res) => {
+						if (status) {
+							uni.hideLoading();
+							_this.subscribe();
+							_this.showToast('连接成功', 1000, 'success')
+						} 
+						status = false;
 					});
 					_this.client.on('message', (topic, message) => {
 						let data = JSON.parse(message);
-						android_addLocalNotification(data.data);
+						// _this.android_addLocalNotification(data.data);
 						uni.$emit('websocket', { data: data.data });
 					});
 				}
-			
-				_this.client.on('reconnect', error => {
-					uni.hideLoading();
-					_this.showToast('正在重连···', 1000)
-			
-				});
-				_this.client.on('error', error => {
-					uni.hideLoading();
-					_this.showToast('连接失败!', 1000)
-				});
-			
 			},
 			subscribe: function() {
 				// 判断是否已成功连接
