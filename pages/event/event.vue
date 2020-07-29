@@ -1,14 +1,14 @@
 <template>
 	<view class="uni-container">
-		
+
 		<s-pull-scroll ref="pullScroll" :back-top="true" :pullDown="pullDown" :pullUp="loadData">
-			 <uni-list>
+			<uni-list>
 				<view class="home-list-item" :show-arrow="false" v-for="(item, index) in list" :key="item.id">
 					<view class="home-list-item-left">
 						<image :src="HttpClient.getImg(item.checkJpg) + '_130x130'" alt="" mode="widthFix" @tap="previewImg(item.checkJpg)">
 					</view>
 					<view class="home-list-item-right">
-						<p class="text-overflow"  @tap="goToDetail(index)">
+						<p class="text-overflow" @tap="goToDetail(index)">
 							{{item.title}}
 						</p>
 						<view>
@@ -23,7 +23,7 @@
 						</p>
 					</view>
 				</view>
-			 </uni-list>
+			</uni-list>
 		</s-pull-scroll>
 		<!-- <view>
 			
@@ -97,16 +97,20 @@
 				data
 			}) => {
 				// errorMessage: "此token为黑名单"
-				if (data && data.errorMessage === '此token为黑名单') {
-					uni.reLaunch({
-						url: '/pages/user/login'
-					});
-				} else {
+				if (data && data.data) {
 					const lableData = data.data;
 					_this.setLable(lableData);
 					_lable = _this.lable;
 					_this.getData(false);
 					_this.getPhoneData();
+					console.log(1111)
+					uni.$emit('business', {
+						data: 'login'
+					});
+				} else {
+					uni.reLaunch({
+						url: '/pages/user/login'
+					});
 				}
 			});
 		},
@@ -134,20 +138,20 @@
 		onNavigationBarButtonTap(e) {},
 		methods: {
 			...mapMutations(['setLable', 'setHomeDetailData']),
-			pullDown (pullScroll) {
+			pullDown(pullScroll) {
 				_this.max = 0;
 				_this.list = [];
 				_this.pageNumber = 1;
 				_this.getData(false);
 			},
-			loadData (pullScroll) {
+			loadData(pullScroll) {
 				if (_this.max >= _this.total) {
 					_this.$refs.pullScroll.finish(_this.max >= _this.total);
 					return;
 				}
 				_this.pageNumber++;
 				_this.getData(true);
-			 },
+			},
 			getPhoneData() {
 				homeApi.getPhoneData({
 					regType: 'app',
@@ -299,8 +303,8 @@
 		flex-direction: row;
 		white-space: nowrap;
 	}
-	
-	.uni-loadmore{
+
+	.uni-loadmore {
 		text-align: center;
 	}
 </style>

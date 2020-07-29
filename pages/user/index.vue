@@ -31,6 +31,7 @@
 			 * 退出登录
 			 */
 			bindLogout() {
+				uni.$emit('business', {data: 'logout'});
 				this.logout();
 				uni.reLaunch({
 					url: '/pages/user/login'
