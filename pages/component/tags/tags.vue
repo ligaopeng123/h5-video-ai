@@ -1,5 +1,5 @@
 <template name="app-tags">
-	<text :style="{'background-color': getBackground(color), 'color': color }" class="text">
+	<text :style="{'background-color': getBackground(color), 'color': color, border: '1upx solid' + color }" class="text">
 		{{text}}
 	</text>
 </template>
@@ -40,7 +40,6 @@
 		},
 		data() {
 			return {
-		
 			}
 		},
 		onUnload() {},
@@ -48,7 +47,7 @@
 		onNavigationBarButtonTap(e) {},
 		methods: {
 			getBackground(color) {
-				var RGBA = "rgba(" + parseInt("0x" + color.slice(1, 3)) + "," + parseInt("0x" + color.slice(3, 5)) + "," + parseInt( "0x" + color.slice(5, 7)) + "," + 0.4 + ")";
+				var RGBA = "rgba(" + parseInt("0x" + color.slice(1, 3)) + "," + parseInt("0x" + color.slice(3, 5)) + "," + parseInt( "0x" + color.slice(5, 7)) + "," + 0.1 + ")";
 				return RGBA
 			}
 		},
@@ -61,7 +60,8 @@
 		text-align: center;
 		border-radius: 8upx;
 		margin: 5upx;
-		font-size: 12upx;
+		font-size: 22upx;
+		font-weight: bolder;
 		line-height: 22upx;
 		padding: 10upx;
 		box-sizing: border-box;

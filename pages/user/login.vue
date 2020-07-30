@@ -68,7 +68,7 @@
 				 * 实际开发中，根据业务需要进行处理，这里仅做示例。
 				 */
 				if (_self.password.length < 6) {
-					_self.message = "用户名不能为空";
+					_self.message = "密码不能为空";
 					return false;
 				}
 				
