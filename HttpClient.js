@@ -34,6 +34,14 @@ const getImg = function(imgUrl = '') {
 	return url;
 }
 
+const getWsIpAddress = function() {
+	let IPAddress = uni.getStorageSync('IPAddress');
+		IPAddress =	IPAddress.replace('https://', '');
+		IPAddress =	IPAddress.replace('http://', '');
+	console.log(IPAddress);
+	return 'ws://' + IPAddress + '/api/appwebsocket';
+}
+
 const getAuthorization = () => {
 	return uni.getStorageSync('token')
 }
@@ -116,7 +124,8 @@ const HttpClient = {
 	get,
 	post,
 	getImg,
-	getIPAddress
+	getIPAddress,
+	getWsIpAddress
 }
 
 export default HttpClient;

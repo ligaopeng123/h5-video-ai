@@ -103,7 +103,6 @@
 					_lable = _this.lable;
 					_this.getData(false);
 					_this.getPhoneData();
-					console.log(1111)
 					uni.$emit('business', {
 						data: 'login'
 					});
