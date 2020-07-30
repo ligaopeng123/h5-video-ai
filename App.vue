@@ -57,6 +57,7 @@
 			subscribe: function() {
 				
 				uni.onSocketMessage(function(res) {
+					let data = JSON.parse(res.data).data;
 					if (Message) {
 						uni.showToast({
 						    title: '订阅成功',
@@ -64,8 +65,9 @@
 						});
 					}
 					uni.$emit('websocket', {
-						data: JSON.parse(res.data).data
+						data: data
 					});
+					_this.android_addLocalNotification(data);
 					Message = false;
 				});
 			},
