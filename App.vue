@@ -8,7 +8,7 @@
 		mapState
 	} from 'vuex'
 	var _this;
-	let Message  = true;
+	var wsConnect = false;
 	export default {
 		computed: {
 			...mapGetters(['lable']),
@@ -16,6 +16,7 @@
 		},
 		onLaunch: function() {
 			_this = this;
+			_this.wsConnect = wsConnect;
 		},
 		onShow: function() {
 			console.log('App Show')
@@ -46,43 +47,46 @@
 				});
 
 				uni.onSocketOpen(function(res) {
-				uni.showToast({
-				    title: '连接成功',
-				    duration: 1000
-				});
+					uni.showToast({
+						title: '连接成功',
+						duration: 1000
+					});
+					_this.wsConnect = true;
 					console.log('WebSocket连接已打开！');
 					_this.subscribe();
 				});
 			},
 			subscribe: function() {
-				
 				uni.onSocketMessage(function(res) {
 					let data = JSON.parse(res.data).data;
-					if (Message) {
-						uni.showToast({
-						    title: '订阅成功',
-						    duration: 1000
-						});
-					}
 					uni.$emit('websocket', {
 						data: data
 					});
 					_this.android_addLocalNotification(data);
-					Message = false;
 				});
-			},
-			publish: function() {
-
-			},
-			unsubscribe: function() {
-
 			},
 			onSocketError: function() {
 				uni.onSocketError(function(res) {
+					_this.wsConnect = false;
 					uni.showToast({
-					    title: '连接失败',
-					    duration: 1000
+						title: '连接失败',
+						duration: 1000
 					});
+					_this.connect();
+					let timer = setTimeout(() => {
+						if (_this.wsConnect) {
+							uni.showToast({
+								title: '重连成功',
+								duration: 1000
+							});
+						} else {
+							uni.showToast({
+								title: '重连失败',
+								duration: 1000
+							});
+						}
+						if (timer) clearTimeout(timer);
+					}, 3000)
 					console.log('WebSocket连接打开失败，请检查！');
 				});
 			},

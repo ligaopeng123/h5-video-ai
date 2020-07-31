@@ -14,7 +14,7 @@ const getIPAddress = function(url = '') {
 		realUrl = IPAddress + url;
 	}
 	if (!realUrl.startsWith('http')) {
-		realUrl.startsWith('/') ? realUrl = 'http:/' + realUrl : 'http://' + realUrl;
+		realUrl = realUrl.startsWith('/') ? 'http:/' + realUrl : 'http://' + realUrl;
 	}
 	return realUrl;
 }
