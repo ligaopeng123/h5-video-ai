@@ -45,7 +45,7 @@
 				password: '',
 				IP: '',
 				message: '',
-				logoImg: '/static/logo/Logo_changqing.png'
+				logoImg: '/static/logo/loho_changyang.png'
 			}
 		},
 		computed: mapState(['IPAddress', 'username']),
